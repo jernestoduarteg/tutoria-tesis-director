@@ -16,9 +16,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
 
       - name: Setup Chrome
+        id: chrome
         uses: browser-actions/setup-chrome@v1
 
       - name: Build
@@ -30,8 +30,6 @@ jobs:
         run: node build/validate.js
 
       - name: Headless test
-        run: |
-          test "${CHROME_BIN:-}" != "" || true
-          node build/test.js
+        run: node build/test.js
         env:
           CHROME: ${{ steps.chrome.outputs.chrome-path }}
