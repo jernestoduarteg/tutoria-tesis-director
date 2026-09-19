@@ -1,0 +1,16 @@
+{
+  "name": "tutoria-tesis-director",
+  "version": "1.0.0",
+  "description": "Tutoría de tesis · Director FCA-UAS — seguimiento inteligente del tesista (idea → defensa). App web autocontenida, sin dependencias ni servidor.",
+  "private": true,
+  "license": "CC-BY-NC-SA-4.0",
+  "scripts": {
+    "build": "node build/build.js",
+    "validate": "node build/validate.js",
+    "test": "node build/test.js",
+    "ci": "node build/build.js && node build/validate.js && node build/test.js"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}

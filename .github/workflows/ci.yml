@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-validate-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Build
+        run: |
+          node build/build.js
+          git diff --exit-code
+
+      - name: Validate
+        run: node build/validate.js
+
+      - name: Headless test
+        run: |
+          test "${CHROME_BIN:-}" != "" || true
+          node build/test.js
+        env:
+          CHROME: ${{ steps.chrome.outputs.chrome-path }}

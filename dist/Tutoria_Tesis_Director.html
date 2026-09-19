@@ -1,0 +1,1103 @@
+<!-- Tutoría de tesis · Director · FCA-UAS
+   v1.0.0 · 2026-09-19 · app web autocontenida (HTML único, sin servidor ni dependencias).
+   Licencia CC BY-NC-SA 4.0 · © 2026 Jesús Ernesto Duarte Gastélum (FCA-UAS).
+   Opens directa: abre dist/index.html o Tutoria_Tesis_Director.html. --><!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Tutoría de tesis · Director FCA-UAS: seguimiento inteligente del tesista de la idea a la defensa. Checklist por bloque, riesgo automático, 4 Puertas, cronograma, agenda e iCal. Sin servidor: todo se guarda en el navegador.">
+<title>Tutoría de tesis · Director · FCA-UAS</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎓%3C/text%3E%3C/svg%3E">
+<style>
+.td-bar{background:#00122b;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 5vw;border-bottom:2px solid var(--wtr-oro, #C9A227);font-size:13px}
+.td-bar b{font-size:14px}
+.td-bar .td-sub{opacity:.8;font-size:11.5px}
+.td-bar .td-ver{background:#ffffff1a;border:1px solid #ffffff33;border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:700;white-space:nowrap}
+.td-foot{background:#0d2440;color:#cfd8e6;text-align:center;font-size:12px;padding:14px 5vw 18px;border-top:4px solid var(--wtr-oro, #C9A227)}
+.td-foot a{color:#fff}
+@media print{.td-bar,.td-foot{display:none}}
+</style>
+<style>
+:root{--wtr-azul:#001B3B;--wtr-azul2:#174a7c;--wtr-oro:#C9A227;--wtr-tinta:#101828;--wtr-gris:#475467;--wtr-borde:#d7dfec;--wtr-ok:#1a7f4b;--wtr-okb:#e4f4ea;--wtr-med:#b88400;--wtr-medb:#fdf0cd;--wtr-alto:#b3261e;--wtr-altob:#fde7e5;--wtr-rad:16px}
+body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;background:#f6f8fb;color:var(--wtr-tinta);line-height:1.55}
+a{color:var(--wtr-azul)}
+.wtr-hero{background:linear-gradient(135deg,var(--wtr-azul),var(--wtr-azul2));color:#fff;padding:26px 5vw 20px;border-bottom:5px solid var(--wtr-oro)}
+.wtr-hero h1{margin:0;font-size:clamp(20px,3vw,30px);line-height:1.15}
+.wtr-hero p{margin:8px 0 0;opacity:.92;font-size:14px;max-width:960px}
+.wtr-strip{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:14px 0 0;padding:0}
+.wtr-strip li{background:#ffffff1f;border:1px solid #ffffff33;border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:700}
+.wtr-tabs{display:flex;flex-wrap:wrap;gap:4px;background:#fff;border-bottom:1px solid var(--wtr-borde);padding:8px 5vw}
+.wtr-tabs button{border:0;background:transparent;color:var(--wtr-gris);font-weight:700;font-size:14px;padding:8px 12px;border-radius:10px;cursor:pointer}
+.wtr-tabs button:hover{background:#eef2f7;color:var(--wtr-azul)}
+.wtr-tabs button.on{background:var(--wtr-azul);color:#fff}
+.wtr-body{padding:20px 5vw 60px;max-width:1180px;margin:0 auto}
+.wtr-card{background:#fff;border:1px solid var(--wtr-borde);border-radius:var(--wtr-rad);padding:16px 18px;box-shadow:0 8px 20px #001b3b0d;margin:0 0 14px}
+.wtr-card h2{margin:0 0 4px;font-size:17px;color:var(--wtr-azul)}
+.wtr-card h3{margin:14px 0 6px;font-size:14.5px;color:var(--wtr-azul2)}
+.wtr-sub{color:var(--wtr-gris);font-size:13.5px;margin:2px 0 10px}
+.wtr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.wtr-grid.n2{grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+.wtr-al{display:flex;flex-direction:column;gap:8px;text-align:left;width:100%;background:#fff;border:1px solid var(--wtr-borde);border-radius:var(--wtr-rad);padding:14px 16px;cursor:pointer;box-shadow:0 6px 16px #001b3b0d;transition:transform .15s}
+.wtr-al:hover,.wtr-al:focus-visible{border-color:var(--wtr-oro);transform:translateY(-2px)}
+.wtr-bad{display:inline-block;border-radius:999px;padding:2px 10px;font-size:11.5px;font-weight:800}
+.wtr-bajo{background:var(--wtr-okb);color:var(--wtr-ok)}
+.wtr-medio{background:var(--wtr-medb);color:var(--wtr-med)}
+.wtr-alto{background:var(--wtr-altob);color:var(--wtr-alto)}
+.wtr-btn{display:inline-block;border:0;border-radius:999px;padding:8px 14px;font-weight:800;font-size:13px;cursor:pointer;background:var(--wtr-azul);color:#fff}
+.wtr-btn.gold{background:var(--wtr-oro);color:var(--wtr-azul)}
+.wtr-btn.line{background:#fff;color:var(--wtr-azul);border:1px solid var(--wtr-borde)}
+.wtr-btn.sm{padding:5px 10px;font-size:12px}
+.wtr-btn.dang{background:var(--wtr-altob);color:var(--wtr-alto)}
+.wtr-bar{height:10px;border-radius:999px;background:#e8edf4;overflow:hidden;position:relative}
+.wtr-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--wtr-azul2),var(--wtr-oro))}
+.wtr-bar i.late{background:#b3261e}
+.wtr-row{display:flex;align-items:center;gap:10px}
+.wtr-row .wtr-grow{flex:1;min-width:0}
+.wtr-fase{margin:16px 0 4px;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--wtr-oro)}
+.wtr-dets{background:#fff;border:1px solid var(--wtr-borde);border-radius:12px;margin:6px 0;overflow:hidden}
+.wtr-dets summary{list-style:none;cursor:pointer;padding:10px 14px;display:flex;align-items:center;gap:10px;font-weight:700;font-size:13.5px}
+.wtr-dets summary::-webkit-details-marker{display:none}
+.wtr-dets summary:hover{background:#f2f6fb}
+.wtr-dets[open] summary{border-bottom:1px solid var(--wtr-borde);background:#f8fafd}
+.wtr-dets .in{padding:8px 14px 12px}
+.wtr-it{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed #e6ecf3}
+.wtr-it:last-child{border-bottom:0}
+.wtr-it .cd{width:26px;height:26px;min-width:26px;border-radius:8px;border:2px solid var(--wtr-borde);background:#fff;color:#fff;display:grid;place-items:center;font-size:13px;cursor:pointer;font-weight:800}
+.wtr-it.done .cd{background:var(--wtr-ok);border-color:var(--wtr-ok)}
+.wtr-it .tx b{display:block;font-size:13.5px}
+.wtr-it .tx span{display:block;font-size:12.5px;color:var(--wtr-gris)}
+.wtr-week{font-size:11px;font-weight:700;color:var(--wtr-oro);background:#fdf3d7;border-radius:999px;padding:1px 9px;white-space:nowrap}
+.wtr-week.late{color:#b3261e;background:#fde7e5}
+.wtr-ids{font-size:11px;color:#8a94a6}
+.wtr-input,.wtr-select{border:1px solid var(--wtr-borde);border-radius:10px;padding:8px 10px;font:inherit;font-size:13.5px;background:#fff;color:var(--wtr-tinta)}
+.wtr-input{width:100%;box-sizing:border-box}
+.wtr-lab{display:block;font-size:11.5px;font-weight:800;color:var(--wtr-gris);margin:8px 0 3px;text-transform:uppercase;letter-spacing:.4px}
+.wtr-form{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0 12px}
+.wtr-alert{display:flex;gap:10px;align-items:flex-start;border-radius:12px;padding:10px 13px;margin:6px 0;font-size:13px}
+.wtr-alert.hi{background:var(--wtr-altob);color:var(--wtr-alto)}
+.wtr-alert.md{background:var(--wtr-medb);color:var(--wtr-med)}
+.wtr-alert.ok{background:var(--wtr-okb);color:var(--wtr-ok)}
+.wtr-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:4px}
+.wtr-table th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--wtr-gris);padding:6px 8px;border-bottom:2px solid var(--wtr-borde)}
+.wtr-table td{padding:7px 8px;border-bottom:1px solid #eef2f7;vertical-align:top}
+.wtr-table tr.thiswk{background:#fbf6e3}
+.wtr-table tr.ovrd{background:#fdf1ef}
+.wtr-chip{display:inline-block;background:#eef2f7;border-radius:999px;padding:1px 8px;font-size:11px;font-weight:700;color:var(--wtr-azul2);margin:1px 3px 1px 0}
+.wtr-puerta{border-radius:12px;padding:11px 14px;margin:8px 0;border:1px solid var(--wtr-borde);background:#fbfcfe}
+.wtr-puerta.log{border-color:#a8d5b8;background:var(--wtr-okb)}
+.wtr-hint{font-size:12.5px;color:var(--wtr-gris);background:#f2f6fb;border-left:4px solid var(--wtr-oro);border-radius:8px;padding:8px 12px;margin:6px 0}
+.wtr-empty{text-align:center;color:var(--wtr-gris);padding:30px 14px}
+.wtr-navlink{display:inline-block;margin-top:2px;font-size:12.5px;font-weight:700}
+.wtr-detalle{display:none}
+.wtr-detalle.on{display:block}
+.wtr-ritmo{display:inline-block;border-radius:999px;padding:2px 10px;font-size:11.5px;font-weight:800;background:#eef2f7;color:var(--wtr-azul2)}
+.wtr-ritmo.acelerado{background:var(--wtr-okb);color:var(--wtr-ok)}
+.wtr-ritmo.rezagado{background:var(--wtr-altob);color:var(--wtr-alto)}
+.wtr-escore{flex:0 0 auto;width:110px}
+.wtr-evid{margin:6px 0 2px;padding:8px 10px;background:#f8fafd;border:1px dashed var(--wtr-borde);border-radius:10px}
+.wtr-evid .wtr-form{gap:0 8px}
+.wtr-plan{display:flex;flex-direction:column;gap:6px}
+.wtr-plan .wtr-tarea{display:flex;gap:8px;align-items:center;font-size:12.5px}
+.wtr-modal{position:fixed;inset:0;background:#001b3be8;z-index:60;overflow:auto;padding:28px 5vw}
+.wtr-modal-box{background:#fff;border-radius:14px;max-width:820px;margin:0 auto;padding:22px 26px;box-shadow:0 24px 60px #00000066}
+.wtr-modal-foot{display:flex;justify-content:space-between;gap:8px;margin-top:16px}
+.wtr-rep h1{font-size:20px;color:var(--wtr-azul);margin:0 0 2px}
+.wtr-rep h2{font-size:15px;color:var(--wtr-azul2);border-bottom:2px solid var(--wtr-oro);padding-bottom:4px;margin:18px 0 8px}
+.wtr-rep table{width:100%;border-collapse:collapse;font-size:12.5px;margin:6px 0}
+.wtr-rep th{text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;color:var(--wtr-gris);padding:4px 6px;border-bottom:2px solid var(--wtr-borde)}
+.wtr-rep td{padding:5px 6px;border-bottom:1px solid #eef2f7}
+.wtr-rep .wtr-bar{max-width:220px}
+.wtr-rep .sig{margin-top:26px;border-top:2px solid var(--wtr-borde);padding-top:10px;font-size:12px;color:var(--wtr-gris)}
+.wtr-selr{display:inline-block;min-width:120px;padding:5px 10px;border:1px solid var(--wtr-borde);border-radius:999px;font:inherit;font-size:12px;font-weight:800;background:#fff;color:var(--wtr-azul)}
+@media print{
+  .wtr-tabs,.wtr-hero,.wtr-modal-foot{display:none}
+  body.wtr-pr #wrap-tutor > :not(.wtr-modal){display:none}
+  body.wtr-pr .wtr-modal{position:static;background:#fff;padding:0;overflow:visible}
+  body.wtr-pr .wtr-modal-box{box-shadow:none;max-width:100%;padding:0}
+}
+</style>
+</head>
+<body>
+<noscript><p style="padding:20px">Este módulo requiere JavaScript (tu navegador lo tiene desactivado).</p></noscript>
+<div class="td-bar"><span><b>🎓 Tutoría de tesis · Director</b> &nbsp;<span class="td-sub">FCA-UAS · Aula 360 · app independiente · tus datos se guardan solo en este navegador</span></span><span class="td-ver">v1.0.0</span></div>
+<div id="wtr" role="main" aria-label="Tutoría de tesis"></div>
+<footer class="td-foot">Módulo independiente del curso «Taller de Metodología de la Investigación 160 h · Aula 360 · FCA-UAS» · Haz <b>respaldo</b> periódico en Ajustes → «⬇ Respaldo JSON» y restaura con «⬆ Restaurar JSON» en otro navegador.<br>📨 Dudas: <a href="mailto:ernesto.duarte@uas.edu.mx">ernesto.duarte@uas.edu.mx</a></footer>
+<script>
+(function(){
+'use strict';
+/* =====================================================================
+   TUTORÍA DE TESIS · Director FCA-UAS
+   Seguimiento inteligente de la idea a la defensa: checklist por bloque,
+   riesgo automático, 4 Puertas, cronograma de 16 semanas, calendario de
+   citas y exportación iCal / respaldo JSON. Todo se guarda en localStorage.
+   ===================================================================== */
+var WRAP = 'wrap-tutor';
+var STANDALONE = true;
+
+/* ---------------- datos del plan: 15 bloques, 5 fases ------------- */
+var FASES = [
+  { f: 0, n: 'Fase 0 · Génesis y panorama', bs: [0, 1], sem: 'Semanas 1–2' },
+  { f: 1, n: 'Fase 1 · Del tema al problema', bs: [2, 3, 4], sem: 'Semanas 2–4' },
+  { f: 2, n: 'Fase 2 · Sustento y congruencia', bs: [5, 6, 7, 8], sem: 'Semanas 4–8' },
+  { f: 3, n: 'Fase 3 · Diseño metodológico', bs: [9, 10, 11], sem: 'Semanas 8–11' },
+  { f: 4, n: 'Fase 4 · Redacción y cierre', bs: [12, 13, 14], sem: 'Semanas 11–16' }
+];
+
+var BLOCKS = [
+  { n: 0, t: 'El mapa de tu tesis', icon: '🗺', items: [
+    { t: 'Comprender el recorrido completo (idea → defensa)', c: 'Explicas en menos de 2 minutos cada fase del taller, su producto final y dónde encaja tu tesis (prueba oral breve con el director).' },
+    { t: 'Definir el enfoque de tu investigación', c: 'Documentas si será cuantitativa, cualitativa o mixta, con una breve justificación y qué implica para tu trabajo.' },
+    { t: 'Situar el área disciplinar y las líneas de la FCA-UAS', c: 'Vinculas tu interés inicial con una línea de investigación vigente; si existe rúbrica de la Unidad Académica, la confirmas con tu director.' }
+  ]},
+  { n: 1, t: 'Del tema de investigación', icon: '🎯', items: [
+    { t: 'Lista de temas candidatos', c: 'Entre 3 y 5 posibles temas, cada uno con una frase de interés (qué te llama la atención y por qué).' },
+    { t: 'Elegir y delimitar el tema', c: 'Un solo tema acotado en tiempo, espacio y población; redactado con criterios SMART (específico, medible, alcanzable, relevante y temporal).' },
+    { t: 'Justificar el tema', c: 'Tres argumentos sólidos: relevancia social, pertinencia disciplinaria y factibilidad (acceso a información y datos).' }
+  ]},
+  { n: 2, t: 'La introducción de la tesis', icon: '📖', items: [
+    { t: 'Borrador de introducción (v1)', c: 'Alrededor de una cuartilla que engancha con el tema, describe el contexto y por qué importa investigarlo.' },
+    { t: 'Contexto y magnitudes', c: 'Cifras, organismo o sector que dimensionan el problema, con al menos una fuente confiable citada.' }
+  ]},
+  { n: 3, t: 'Planteamiento del problema', icon: '⚠️', items: [
+    { t: 'Situación-problema descrita', c: 'En máximo dos cuartillas, con evidencias (cifras, estudios previos o hechos verificables) que demuestran que existe el problema.' },
+    { t: 'Pregunta general y preguntas específicas', c: 'Una pregunta general y de 3 a 5 específicas, evaluables y sin ambigüedad; cada específica apunta a un objetivo.' },
+    { t: 'Delimitación y alcance', c: 'Unidad de análisis, periodo temporal, lugar y población delimitados explícitamente.' }
+  ]},
+  { n: 4, t: 'Objetivos de investigación', icon: '🎯', items: [
+    { t: 'Objetivo general', c: 'Redactado con verbo en infinitivo, alcanzable y vinculado a la pregunta general.' },
+    { t: 'Objetivos específicos', c: 'Cada objetivo específico responde a una pregunta específica (relación 1 a 1 o por grupo, sin lagunas).' },
+    { t: 'Congruencia objetivo-base', c: 'Los objetivos son deducibles del título, el problema y las preguntas; no hay contradicciones entre apartados.' }
+  ]},
+  { n: 5, t: 'Antecedentes de investigación', icon: '📚', items: [
+    { t: 'Barrido bibliográfico inicial', c: 'Mínimo 6 fuentes recientes (últimos 10 años) directamente relacionadas con el tema.' },
+    { t: 'Antecedentes por evolución', c: 'Ordenados por evolución histórica del conocimiento, con citación correcta (APA 7) y conexión con tu trabajo.' }
+  ]},
+  { n: 6, t: 'Marco teórico, conceptual y referencial', icon: '🏛', items: [
+    { t: 'Marco teórico por variable', c: 'Mínimo 12 fuentes; cada variable o constructo con su apartado propio y citas que lo respalden.' },
+    { t: 'Marco conceptual', c: 'Definiciones operacionales de cada término clave, cada una con autor y año.' },
+    { t: 'Marco referencial', c: 'Contexto institucional, geográfico y normativo que delimita el objeto de estudio.' },
+    { t: 'Actualidad y vacíos del conocimiento', c: 'Señalas lo que se sabe, lo que falta por saber y en qué aporta tu investigación.' }
+  ]},
+  { n: 7, t: 'Hipótesis y supuestos', icon: '🧪', items: [
+    { t: 'Hipótesis o supuestos orientadores', c: 'En enfoque cuantitativo, hipótesis clara y vinculada a variables; en cualitativo, supuestos orientadores bien redactados.' },
+    { t: 'Variables operacionalizadas', c: 'Identificas variable independiente, dependiente y de control, y cómo medirás cada una.' }
+  ]},
+  { n: 8, t: 'Matriz de congruencia', icon: '🗃', items: [
+    { t: 'Matriz de 15 celdas completa', c: 'Las 15 celdas (objetivos–fuentes, objetivo-tema, tipo–población, etc.) completas y coherentes entre sí.' },
+    { t: 'Coherencia horizontal y vertical', c: 'Cada fila y columna se lee sin contradicciones y apruebas la autoevaluación de la guía.' }
+  ]},
+  { n: 9, t: 'Tipos de investigación', icon: '🔬', items: [
+    { t: 'Tipo y diseño definidos', c: 'Explicas, con bibliografía, el tipo (descriptivo, explicativo, correlacional…) y el diseño (transversal, longitudinal, estudio de caso…).' },
+    { t: 'Pertinencia del diseño', c: 'El diseño responde a las preguntas de investigación y es factible en el periodo establecido.' }
+  ]},
+  { n: 10, t: 'Universo, población y muestra', icon: '👥', items: [
+    { t: 'Universo y población', c: 'Describes universo, población y unidad de muestreo con cifras reales.' },
+    { t: 'Muestra, método y tamaño', c: 'Tipo de muestreo (probabilístico o no) y tamaño justificado con fórmula o criterio académico.' }
+  ]},
+  { n: 11, t: 'Técnicas, métodos e instrumentos', icon: '🧰', items: [
+    { t: 'Técnicas e instrumentos previstos', c: 'Cuestionarios, guías de entrevista o análisis documental con su validación prevista (juicio de expertos, prueba piloto, alfa de Cronbach).' },
+    { t: 'Prueba piloto realizada', c: 'Instrumento aplicado a una muestra reducida y ajustado conforme a los resultados.' },
+    { t: 'Ética y factibilidad', c: 'Consentimientos informados, anonimato y viabilidad del trabajo de campo ya resueltos.' }
+  ]},
+  { n: 12, t: 'Redacción de textos académicos', icon: '✍️', items: [
+    { t: 'Cuerpo con estilo académico', c: 'Redacción impersonal, coherente y sin errores; cada párrafo con una idea central y transiciones claras.' },
+    { t: 'Citas y formato consistentes', c: 'Toda cita y referencia en norma APA 7; citación uniforme en el documento completo.' }
+  ]},
+  { n: 13, t: 'Modelo ex ante', icon: '🧩', items: [
+    { t: 'Modelo ex ante (simulación previa)', c: 'Simulas el contenido y la exposición de cada apartado antes de redactarlo; el esquema muestra coherencia global.' },
+    { t: 'Autoevaluación contra los ítems', c: 'Cruzas los ítems del instrumento con los objetivos; no hay preguntas sin responder ni huecos de información.' }
+  ]},
+  { n: 14, t: 'Estructura completa del protocolo', icon: '📁', items: [
+    { t: 'Protocolo completo integrado', c: 'Las 8 partes esperadas (portada, índice, introducción, marco teórico, metodología, resultados esperados, fuentes y cronograma) en un solo documento ordenado.' },
+    { t: 'Revisión por terceros', c: 'Alguien ajeno al proyecto lee y comenta; verificas que el documento se entiende completo y sin lagunas.' }
+  ]}
+];
+
+/* ---------------- cronograma de 16 semanas ------------- */
+var SEMANAS = [
+  { s: 1, b: [0, 1], h: 'Tema elegido y delimitado', p: 0 },
+  { s: 2, b: [0, 2], h: 'Introducción v1 + situaciones', p: 0 },
+  { s: 3, b: [3], h: 'PUERTA 1 · Problema y ruta', p: 1 },
+  { s: 4, b: [4, 5], h: 'Objetivos y antecedentes', p: 0 },
+  { s: 5, b: [5, 6], h: 'Marco: barrido y sustento', p: 0 },
+  { s: 6, b: [6], h: 'Marco teórico en construcción', p: 0 },
+  { s: 7, b: [7, 8], h: 'PUERTA 2 · Sustento metodológico', p: 2 },
+  { s: 8, b: [9], h: 'Tipo y diseño definidos', p: 0 },
+  { s: 9, b: [10], h: 'Muestra justificada', p: 0 },
+  { s: 10, b: [11], h: 'Instrumentos y prueba piloto', p: 0 },
+  { s: 11, b: [11, 12], h: 'Trabajo de campo / aplicación', p: 0 },
+  { s: 12, b: [12], h: 'Análisis e interpretación', p: 0 },
+  { s: 13, b: [13], h: 'PUERTA 3 · Modelo ex ante y resultados', p: 3 },
+  { s: 14, b: [13, 14], h: 'Protocolo integrado (1.ª versión)', p: 0 },
+  { s: 15, b: [14], h: 'PUERTA 4 · Ajustes y aprobación del director', p: 4 },
+  { s: 16, b: [14], h: 'Defensa ante comité y registro', p: 4 }
+];
+
+var PUERTAS = [
+  { p: 1, nombre: 'Puerta 1 · Problema y ruta', sem: 3,
+    reqs: [['b1-1', 'Tema elegido y delimitado'], ['b3-0', 'Situación-problema con evidencia'], ['b3-1', 'Preguntas general y específicas'], ['b3-2', 'Delimitación y alcance'], ['b4-2', 'Objetivos congruentes']] },
+  { p: 2, nombre: 'Puerta 2 · Sustento metodológico', sem: 7,
+    reqs: [['b6-0', 'Marco teórico con ≥12 fuentes'], ['b6-3', 'Actualidad y vacíos detectados'], ['b7-1', 'Hipótesis y variables operacionales'], ['b8-0', 'Matriz de congruencia completa'], ['b9-0', 'Tipo y diseño definidos']] },
+  { p: 3, nombre: 'Puerta 3 · Evidencia y cumplimiento', sem: 13,
+    reqs: [['b10-1', 'Muestra justificada'], ['b11-0', 'Técnicas e instrumentos'], ['b11-1', 'Prueba piloto realizada'], ['b13-0', 'Modelo ex ante'], ['b13-1', 'Autoevaluación frente a ítems']] },
+  { p: 4, nombre: 'Puerta 4 · Protocolo integrado y defensa', sem: 15,
+    reqs: [['b12-1', 'Estilo académico y APA 7'], ['b14-0', 'Protocolo completo integrado'], ['b14-1', 'Revisión por terceros'], ['c-def', 'Ensayos de defensa realizados'], ['c-reg', 'Registro e inscripción de tesis gestionados']] }
+];
+
+/* Entregables adicionales según la modalidad del tesista */
+var MOD = {
+  Cuantitativa: {
+    10: [
+      { t: 'Tamaño muestral con base estadística', c: 'Justificas el tamaño con fórmula o software (n≥30 o cálculo por poder estadístico), citando la fuente.' }
+    ],
+    11: [
+      { t: 'Validación psicométrica del instrumento', c: 'Presentas alfa de Cronbach y validez de contenido del piloto con resultados numéricos.' }
+    ]
+  },
+  Cualitativa: {
+    10: [
+      { t: 'Estrategia de muestreo por saturación', c: 'Justificas la selección de informantes por criterio de saturación, riqueza informativa o casos típicos.' }
+    ],
+    11: [
+      { t: 'Codificación y triangulación previstas', c: 'Defines el esquema de codificación (abierta/axial) y cómo triangularás fuentes o informantes.' }
+    ]
+  },
+  Mixta: {
+    10: [
+      { t: 'Tamaño muestral con base estadística', c: 'Justificas el tamaño con fórmula o software (n≥30 o cálculo por poder estadístico), citando la fuente.' },
+      { t: 'Estrategia de muestreo por saturación', c: 'Justificas la selección de informantes por criterio de saturación, riqueza informativa o casos típicos.' }
+    ],
+    11: [
+      { t: 'Validación psicométrica del instrumento', c: 'Presentas alfa de Cronbach y validez de contenido del piloto con resultados numéricos.' },
+      { t: 'Codificación y triangulación previstas', c: 'Defines el esquema de codificación (abierta/axial) y cómo triangularás fuentes o informantes.' }
+    ]
+  }
+};
+
+var RITMO = { acelerado: '⚡ Acelerado', normal: '● Normal', rezagado: '🐢 Rezagado' };
+
+function block(mod, n) { var b = BLOCKS[n]; var ex = (MOD[mod] || {})[n] || []; return b.items.concat(ex); }
+function baseLen(n) { return BLOCKS[n].items.length; }
+
+var PANELES = ['resumen', 'alumnos', 'ruta', 'cronograma', 'citas'];
+
+/* ---------------- almacenamiento ------------- */
+var KEY = 'tut_';
+var LS = (function () {
+  var mem = {};
+  return {
+    get: function (k) { try { return localStorage.getItem(k); } catch (e) { return (k in mem) ? mem[k] : null; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) { mem[k] = String(v); } },
+    del: function (k) { try { localStorage.removeItem(k); } catch (e) { delete mem[k]; } },
+    keys: function () { try { var a = []; for (var i = 0; i < localStorage.length; i++) a.push(localStorage.key(i)); return a; } catch (e) { return Object.keys(mem); } }
+  };
+})();
+function load(k, d) { try { var v = LS.get(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
+function save(k, v) { LS.set(k, JSON.stringify(v)); }
+
+var S = { panel: 'resumen', sel: null, conf: { inicio: '2026-08-17' }, perfil: {}, alumnos: [], citas: [], estado: {}, bitacora: {} };
+
+function est(id) { if (S.estado[id] === undefined) { S.estado[id] = load(KEY + 'av_' + id, {}); } return S.estado[id]; }
+function bit(id) { if (S.bitacora[id] === undefined) { S.bitacora[id] = load(KEY + 'bit_' + id, []); } return S.bitacora[id]; }
+function loadAll() {
+  S.conf = load(KEY + 'conf', { inicio: '2026-08-17' });
+  S.perfil = load(KEY + 'perfil', {});
+  S.alumnos = load(KEY + 'alumnos', []);
+  S.citas = load(KEY + 'citas', []);
+  S.estado = {}; S.bitacora = {};
+}
+function persistAl() { save(KEY + 'alumnos', S.alumnos); }
+function persistCi() { save(KEY + 'citas', S.citas); }
+
+/* ---------------- utilidades ------------- */
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function pad(n) { return (n < 10 ? '0' : '') + n; }
+function isoYmd(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function parseIso(s) { var p = String(s).split('-'); return new Date(+p[0], +p[1] - 1, +p[2] || 1); }
+function addDays(d, n) { var x = new Date(d); x.setDate(x.getDate() + n); return x; }
+function fmt(s) { if (!s) return '—'; var p = s.split('-'); return pad(+p[2]) + '/' + pad(+p[1]) + '/' + p[0]; }
+function hoy() { return isoYmd(new Date()); }
+function lunesDeSem(sem) { return addDays(parseIso(S.conf.inicio || '2026-08-17'), 7 * (sem - 1)); }
+function dom(sem) { var d = lunesDeSem(sem); return pad(d.getDate()) + '/' + pad(d.getMonth() + 1); }
+function semanaActual() {
+  var ini = parseIso(S.conf.inicio || '2026-08-17'); var d = new Date();
+  var diff = Math.floor((d.getTime() - ini.getTime()) / 86400000);
+  var w = Math.floor(diff / 7) + 1; if (w < 1) return 1; return w > 16 ? 16 : w;
+}
+function semanaDe(fechaISO) {
+  var ini = parseIso(S.conf.inicio || '2026-08-17'); var d = parseIso(fechaISO);
+  var diff = Math.floor((d.getTime() - ini.getTime()) / 86400000);
+  var w = Math.floor(diff / 7) + 1; if (w < 1) return 1; return w > 16 ? 16 : w;
+}
+function expectedPct() { return Math.round(semanaActual() / 16 * 100); }
+function expectedPctFor(id) {
+  var al = alumno(id); var off = (al && al.ritmo === 'acelerado') ? 10 : (al && al.ritmo === 'rezagado') ? -10 : 0;
+  var v = expectedPct() + off; return v < 0 ? 0 : (v > 100 ? 100 : v);
+}
+function expectedFasePct(bs) {
+  var w = semanaActual();
+  var ws = [];
+  SEMANAS.forEach(function (sm) { sm.b.forEach(function (n) { if (bs.indexOf(n) >= 0 && ws.indexOf(sm.s) < 0) ws.push(sm.s); }); });
+  var w0 = Math.min.apply(null, ws), w1 = Math.max.apply(null, ws);
+  if (w <= w0) return 0; if (w >= w1) return 100;
+  return Math.round((w - w0) / (w1 - w0) * 100);
+}
+function semanaDeBloque(n) { for (var i = 0; i < SEMANAS.length; i++) if (SEMANAS[i].b.indexOf(n) >= 0) return SEMANAS[i].s; return 16; }
+function semanaDeKey(k) { if (k.indexOf('b') === 0) { var n = parseInt(k.slice(1).split('-')[0], 10); return semanaDeBloque(n); } for (var i = 0; i < PUERTAS.length; i++) { var pr = PUERTAS[i].reqs; for (var j = 0; j < pr.length; j++) if (pr[j][0] === k) return PUERTAS[i].sem; } return 16; }
+function item(k, id) {
+  var mod = (id && alumno(id)) ? alumno(id).modalidad : 'Cuantitativa';
+  if (k.indexOf('b') !== 0) return null;
+  var p = k.slice(1).split('-'); var b = parseInt(p[0], 10); var i = parseInt(p[1], 10);
+  var ar = block(mod, b);
+  return ar[i] ? { t: ar[i].t, c: ar[i].c, b: b, sem: semanaDeBloque(b), extra: i >= baseLen(b) } : null;
+}
+function alumno(id) { for (var i = 0; i < S.alumnos.length; i++) if (S.alumnos[i].id === id) return S.alumnos[i]; return null; }
+function uid() { return 'a' + Date.now().toString(36) + Math.floor(Math.random() * 1e4).toString(36); }
+function allKeys(id) {
+  var mod = (id && alumno(id)) ? alumno(id).modalidad : null;
+  var ks = [];
+  FASES.forEach(function (f) { f.bs.forEach(function (n) { block(mod || 'Cuantitativa', n).forEach(function (_, i) { ks.push('b' + n + '-' + i); }); }); });
+  PUERTAS.forEach(function (p) { p.reqs.forEach(function (r) { if (ks.indexOf(r[0]) < 0) ks.push(r[0]); }); });
+  return ks;
+}
+function pctAlumno(id) {
+  var ks = allKeys(id); var e = est(id); var c = 0;
+  ks.forEach(function (k) { if (e[k]) c++; });
+  return ks.length ? Math.round(c / ks.length * 100) : 0;
+}
+function faseStats(id, bs) {
+  var mod = alumno(id) ? alumno(id).modalidad : 'Cuantitativa';
+  var e = est(id); var c = 0, t = 0;
+  bs.forEach(function (n) {
+    block(mod, n).forEach(function (_, i) { t++; if (e['b' + n + '-' + i]) c++; });
+  });
+  return { c: c, t: t, pct: t ? Math.round(c / t * 100) : 0 };
+}
+function puertaReqs(p) { return p.reqs; }
+function puertaScore(id, p) {
+  var e = est(id); var sum = 0, ok = 0, tot = 0;
+  p.reqs.forEach(function (r) { tot++; if (e[r[0]]) { ok++; sum++; } });
+  return { score: tot ? Math.round(ok / tot * 100) : 0, ok: ok, tot: tot };
+}
+function puertaLograda(id, p) { return p.reqs.every(function (r) { return !!est(id)[r[0]]; }); }
+function leerMatriz() {
+  var c = 0;
+  for (var i = 0; i < 15; i++) { var v = null; try { v = localStorage.getItem('a360_mz_' + i); } catch (e) { } if (v && v.replace(/<[^>]*>/g, '').replace(/\s/g, '').length > 6) c++; }
+  return c;
+}
+function ritmoOf(al) { return (al && RITMO[al.ritmo]) ? al.ritmo : 'normal'; }
+function lastCita(id) {
+  var cs = S.citas.filter(function (c) { return c.a === id; }).sort(function (x, y) { return y.f < x.f ? -1 : 1; });
+  return cs[0] || null;
+}
+function citaReciente(id) {
+  var lim = addDays(new Date(), -14); var l = isoYmd(lim);
+  return S.citas.some(function (c) { return c.a === id && c.d && c.f >= l; });
+}
+function sortCitas() { return S.citas.slice().sort(function (a, b) { return (a.f === b.f) ? (a.h < b.h ? -1 : 1) : (a.f < b.f ? -1 : 1); }); }
+function proxCita(id) {
+  var t = hoy(); return sortCitas().find(function (c) { return c.a === id && !c.d && c.f >= t; }) || null;
+}
+function citasSemanaActual() {
+  var w = semanaActual(); return S.citas.filter(function (c) { return !c.d && semanaDe(c.f) === w; }).length;
+}
+
+/* ---------------- motor de riesgo ------------- */
+function riesgo(id) {
+  var al = alumno(id); if (!al) return null;
+  var e = est(id); var w = semanaActual(); var factors = []; var slots = [];
+  var pct = pctAlumno(id); var r = ritmoOf(al);
+  PUERTAS.forEach(function (p) {
+    if (p.sem <= w && !puertaLograda(id, p)) { factors.push('Puerta ' + p.p + ' sin completar (vencía Semana ' + p.sem + ')'); slots.push({ ok: false, p: p, due: p.sem <= w }); }
+    else slots.push({ ok: puertaLograda(id, p), p: p, due: p.sem <= w });
+  });
+  var expT = expectedPctFor(id);
+  if (pct < Math.max(0, expT - 12)) factors.push('Avance ' + pct + '% por debajo del ritmo esperado (' + expT + '%, ritmo ' + (RITMO[r] || r) + ')');
+  var atrasos = 0;
+  allKeys(id).forEach(function (k) { if (!e[k] && semanaDeKey(k) < w) atrasos++; });
+  if (atrasos >= 3) factors.push(atrasos + ' hitos vencidos sin entregar');
+  if (!citaReciente(id)) factors.push('Sin asesoría registrada en los últimos 14 días');
+  var fases = FASES.map(function (f) {
+    var fs = faseStats(id, f.bs); var ex = expectedFasePct(f.bs);
+    var lvl = 'ok';
+    if (fs.pct < Math.max(0, ex - 30)) lvl = 'alto';
+    else if (fs.pct < Math.max(0, ex - 10)) lvl = 'medio';
+    return { f: f.n, pct: fs.pct, exp: ex, lvl: lvl, c: fs.c, t: fs.t };
+  });
+  fases.forEach(function (f) { if (f.lvl === 'alto') factors.push('Fase «' + f.f + '» sin completar el punto de referencia'); });
+  var nivel = 'bajo';
+  if (factors.length >= 3 || slots.some(function (s) { return s.due && !s.ok; }) || (r === 'rezagado' && fases.some(function (f) { return f.lvl === 'alto'; }))) nivel = 'alto';
+  else if (factors.length >= 1) nivel = 'medio';
+  var nxt = null;
+  for (var fi = 0; fi < FASES.length && !nxt; fi++) {
+    for (var bi = 0; bi < FASES[fi].bs.length && !nxt; bi++) {
+      var n = FASES[fi].bs[bi];
+      var ar = block(al.modalidad, n);
+      for (var ii = 0; ii < ar.length; ii++) {
+        var k = 'b' + n + '-' + ii;
+        if (!e[k]) { var it = item(k, id); nxt = { key: k, t: it.t, c: it.c, b: n, sem: it.sem }; break; }
+      }
+    }
+  }
+  return { nivel: nivel, factors: factors, pct: pct, exp: expT, sem: w, next: nxt, slots: slots, atrasos: atrasos, fases: fases, ritmo: r };
+}
+function evidGet(a, k) { var e = est(a); return (e && e[k] && typeof e[k] === 'object') ? e[k] : null; }
+function planSemanal(id) {
+  var al = alumno(id); if (!al) return null;
+  var e = est(id); var w = semanaActual(); var tareas = []; var atrasos = []; var done = [];
+  allKeys(id).forEach(function (k) {
+    var s = semanaDeKey(k);
+    if (e[k]) { done.push(k); return; }
+    if (s === w) { var it = item(k, id); if (it) tareas.push({ key: k, t: it.t, b: it.b, sem: s, extra: it.extra }); }
+    else if (s < w) { var it2 = item(k, id); if (it2) atrasos.push({ key: k, t: it2.t, b: it2.b, sem: s }); }
+  });
+  return { sem: w, tareas: tareas, atrasos: atrasos, hecho: done.length };
+}
+function alertas() {
+  var out = []; var w = semanaActual(); var t = hoy();
+  S.alumnos.forEach(function (al) {
+    var r = riesgo(al.id);
+    if (r && r.nivel === 'alto') out.push({ icon: '🚨', cls: 'hi', txt: esc(al.nombre) + ': riesgo alto — ' + esc(r.factors[0] || 'múltiples pendientes') });
+    else if (r && r.nivel === 'medio') out.push({ icon: '⚠️', cls: 'md', txt: esc(al.nombre) + ': ' + esc(r.factors[0] || 'pendientes por atender') });
+    var pc = proxCita(al.id);
+    if (pc) { var d = parseIso(pc.f); if (w !== semanaDe(pc.f)) out.push({ icon: '📅', cls: 'md', txt: 'Cita con ' + esc(al.nombre) + ' el ' + fmt(pc.f) + ' a las ' + esc(pc.h) + ' («' + esc(pc.m) + '») fuera de la semana actual.' }); }
+    if (!citaReciente(al.id)) out.push({ icon: '📅', cls: 'md', txt: esc(al.nombre) + ' sin asesoría registrada en 14 días.' });
+  });
+  PUERTAS.forEach(function (p) { if (p.sem >= w && p.sem <= w + 1) out.push({ icon: '🚪', cls: 'md', txt: 'Vence la ' + esc(p.nombre) + ' en la Semana ' + p.sem + ' (' + dom(p.sem) + ').' }); });
+  var soon = sortCitas().filter(function (c) { return !c.d && c.f >= t; }).slice(0, 3);
+  soon.forEach(function (c) { var al = alumno(c.a); out.push({ icon: '🔔', cls: 'ok', txt: 'Próxima cita: ' + (al ? esc(al.nombre) : 'director') + ' el ' + fmt(c.f) + ' ' + esc(c.h || '') + ' · ' + esc(c.m) }); });
+  return out;
+}
+
+/* ---------------- navegación entre vistas de la app ------------- */
+function navGo(n) {
+  if (STANDALONE) { alert('Esta versión independiente no incluye las diapositivas ni la guía del taller. Consúltalas en el curso «Todo en uno» (Aula 360 · FCA-UAS).'); return; }
+  if (window.A360 && window.A360.view && typeof A360.goDeck === 'function') { A360.goDeck(n); return; }
+  try { window.location.href = 'Diapositivas_por_Tema_de_Tesis.html#d' + n; } catch (e) { }
+}
+function navGuia() {
+  if (STANDALONE) { alert('La guía del tesista (formato, citas APA 7 y matriz de congruencia) se encuentra en el curso «Todo en uno» (Aula 360 · FCA-UAS).'); return; }
+  if (window.A360 && typeof A360.show === 'function') { A360.show('guia'); return; }
+  try { window.location.href = 'Guia_Tesis_FCA.html'; } catch (e) { }
+}
+
+/* ---------------- exportaciones ------------- */
+function ics() {
+  var L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Aula360//Tutoria Tesis//ES', 'CALSCALE:GREGORIAN'];
+  sortCitas().forEach(function (c) {
+    var al = alumno(c.a); var y = c.f.replace(/-/g, '');
+    var hpm = (c.h || '10:00').split(':');
+    var hh0 = parseInt(hpm[0], 10) || 10; var mm0 = hpm[1] || '00';
+    var dh = (hh0 + 1);
+    L.push('BEGIN:VEVENT');
+    L.push('DTSTART:' + y + 'T' + pad(hh0) + mm0 + '00');
+    L.push('DTEND:' + y + 'T' + (dh < 24 ? pad(dh) : '00') + mm0 + '00');
+    L.push('SUMMARY:Asesoría de tesis - ' + (al ? al.nombre : 'Director') + (c.m ? ' - ' + c.m : ''));
+    L.push('UID:cita-' + c.id + '@aula360');
+    L.push('STATUS:' + (c.d ? 'COMPLETED' : 'CONFIRMED'));
+    L.push('END:VEVENT');
+  });
+  S.alumnos.forEach(function (al) {
+    PUERTAS.forEach(function (p) {
+      var d = lunesDeSem(p.sem); var y = isoYmd(d).replace(/-/g, '');
+      L.push('BEGIN:VEVENT'); L.push('DTSTART;VALUE=DATE:' + y); L.push('SUMMARY:Puerta ' + p.p + ' (Semana ' + p.sem + ') - ' + al.nombre);
+      L.push('DESCRIPTION:' + p.nombre); L.push('UID:puerta-' + al.id + '-' + p.p + '@aula360'); L.push('END:VEVENT');
+    });
+  });
+  L.push('END:VCALENDAR');
+  return L.join('\r\n');
+}
+function downloadICS() {
+  var txt = ics(); var blob = new Blob([txt], { type: 'text/calendar' });
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'tutor_tesis_' + hoy() + '.ics'; document.body.appendChild(a); a.click();
+  setTimeout(function () { try { URL.revokeObjectURL(a.href); } catch (e) { } }, 4000);
+}
+function exportJSON() {
+  var data = { perfil: S.perfil, conf: S.conf, alumnos: S.alumnos, citas: S.citas };
+  S.alumnos.forEach(function (al) { data['av_' + al.id] = est(al.id); data['bit_' + al.id] = bit(al.id); });
+  var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  var a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'tutor_tesis_respaldo_' + hoy() + '.json'; document.body.appendChild(a); a.click();
+  setTimeout(function () { try { URL.revokeObjectURL(a.href); } catch (e) { } }, 4000);
+}
+function importJSON(obj) {
+  if (!obj) return; 
+  if (obj.perfil) S.perfil = obj.perfil;
+  if (obj.conf) S.conf = obj.conf;
+  if (obj.alumnos) S.alumnos = obj.alumnos.map(function (x) { x.ritmo = (x.ritmo && ['acelerado', 'normal', 'rezagado'].indexOf(x.ritmo) >= 0) ? x.ritmo : 'normal'; return x; });
+  if (obj.citas) S.citas = obj.citas;
+  (obj.alumnos || []).forEach(function (al) { if (obj['av_' + al.id]) save(KEY + 'av_' + al.id, obj['av_' + al.id]); if (obj['bit_' + al.id]) save(KEY + 'bit_' + al.id, obj['bit_' + al.id]); });
+  S.estado = {}; S.bitacora = {};
+  persistAl(); persistCi(); save(KEY + 'conf', S.conf); save(KEY + 'perfil', S.perfil);
+  render();
+}
+function resetAll() {
+  if (!confirm('¿Borrar TODOS los alumnos, avances, citas y la configuración de la tutoría?')) return;
+  LS.keys().forEach(function (k) { if (k.indexOf(KEY) === 0) LS.del(k); });
+  loadAll(); render(); alert('Tutoría restablecida: se conservan las fuentes del curso y la guía.');
+}
+function demo() {
+  if (S.alumnos.length === 0) {
+    var a1 = { id: uid(), nombre: 'María Fernanda López', lic: 'Contaduría', tema: 'Cumplimiento fiscal en MiPyMes de Culiacán', modalidad: 'Cuantitativa', ritmo: 'normal', creado: hoy() };
+    var a2 = { id: uid(), nombre: 'Jorge Adrián Ríos', lic: 'Administración', tema: 'Motivación laboral y rotación en empresas de servicio', modalidad: 'Mixta', ritmo: 'normal', creado: hoy() };
+    S.alumnos.push(a1, a2); persistAl();
+    ['b0-0', 'b0-1', 'b0-2', 'b1-0', 'b1-1', 'b2-0', 'b3-0'].forEach(function (k) { var e = est(a1.id); e[k] = 1; save(KEY + 'av_' + a1.id, e); });
+    ['b0-0', 'b0-1', 'b0-2', 'b1-0', 'b1-1', 'b2-0'].forEach(function (k) { var e = est(a2.id); e[k] = 1; save(KEY + 'av_' + a2.id, e); });
+    S.citas.push({ id: 'c' + Date.now(), a: a1.id, f: hoy(), h: '10:30', m: 'Revisión de planteamiento y preguntas', n: 'Ajustar pregunta 3', d: 1 });
+    var d2 = addDays(new Date(), 3); S.citas.push({ id: 'c' + (Date.now() + 1), a: a2.id, f: isoYmd(d2), h: '09:00', m: 'Estado del arte', n: '', d: 0 });
+    persistCi();
+    alert('Ejemplo cargado: 2 tesistas, avances y citas. Personaliza o borra desde «Ajustes».');
+    render(); return;
+  }
+  alert('Ya hay alumnos registrados; borra o usa «Ajustes → Restablecer» para cargar el ejemplo.');
+}
+
+/* ---------------- render ------------- */
+function weekChip(sem) {
+  var w = semanaActual(); var cls = sem < w ? 'late' : (sem === w ? '' : '');
+  return '<span class="wtr-week ' + cls + '">Sem ' + sem + ' · ' + dom(sem) + '</span>';
+}
+function bar(pct, cls, id) {
+  var ref = id ? expectedPctFor(id) : expectedPct();
+  var c = (pct < Math.max(24, ref - 30)) ? ' late' : '';
+  return '<div class="wtr-bar"><i style="width:' + Math.min(100, pct) + '%" class="' + (cls || '') + c + '"></i></div>';
+}
+function head() {
+  var total = S.alumnos.length;
+  var enRiesgo = S.alumnos.filter(function (a) { return riesgo(a.id).nivel === 'alto'; }).length;
+  var cit = citasSemanaActual();
+  var pOk = 0, pTot = S.alumnos.length * 4;
+  S.alumnos.forEach(function (a) { PUERTAS.forEach(function (p) { if (puertaLograda(a.id, p)) pOk++; }); });
+  return '<header class="wtr-hero"><h1>🎓 Tutoría de tesis · Director</h1>' +
+    '<p>Ruta completa del tesista, de la <b>idea</b> a la <b>defensa</b>: 15 bloques con checklist y estándares, 4 Puertas, cronograma de 16 semanas, riesgo automático y agenda de asesorías. Tus datos se guardan <b>solo en este navegador</b>.</p>' +
+    '<ul class="wtr-strip"><li>👥 ' + total + ' tesista(s)</li><li>🚨 ' + enRiesgo + ' en riesgo</li><li>📅 ' + cit + ' cita(s) esta semana</li><li>🚪 ' + pOk + '/' + pTot + ' puertas logradas</li></ul></header>' +
+    '<nav class="wtr-tabs">' + PANELES.map(function (p) {
+      var t = { resumen: '📊 Resumen', alumnos: '👥 Alumnos', ruta: '🗺 Ruta del tesista', cronograma: '🗓 Cronograma', citas: '📅 Agenda' }[p];
+      return '<button data-act="tab" data-p="' + p + '" class="' + (S.panel === p ? 'on' : '') + '">' + t + '</button>';
+    }).join('') + '</nav>';
+}
+function emptyState(icon, txt, act, lab) {
+  return '<div class="wtr-empty"><div style="font-size:44px">' + icon + '</div><p>' + txt + '</p>' +
+    (act ? '<button class="wtr-btn gold" data-act="' + act + '">' + lab + '</button>' : '') + '</div>';
+}
+function safeUrl(u) { u = String(u || '').trim(); return /^(https?:\/\/|file:\/\/|\/|#)/i.test(u) ? u : ''; }
+function informeHTML(id) {
+  var al = alumno(id); if (!al) return '';
+  var r = riesgo(id); var e = est(id); var prog = planSemanal(id); var mz = leerMatriz();
+  var bl = bit(id).slice().sort(function (a, b) { return a.f < b.f ? 1 : -1; });
+  var h = '<div class="wtr-rep"><h1>Informe de avance de tesis</h1>' +
+    '<p style="margin:2px 0 0;color:var(--wtr-gris);font-size:12.5px">Generado ' + fmt(hoy()) +
+    (S.perfil.nombre ? ' · Director(a): <b>' + esc(S.perfil.nombre) + '</b>' : '') + (S.perfil.inst ? ' · ' + esc(S.perfil.inst) : '') + '</p>';
+  h += '<h2>Datos del tesista</h2><table><tr><th>Nombre</th><td>' + esc(al.nombre) + '</td><th>Licenciatura</th><td>' + esc(al.lic) + '</td></tr>' +
+    '<tr><th>Modalidad</th><td>' + esc(al.modalidad) + '</td><th>Ritmo</th><td>' + (RITMO[al.ritmo] || RITMO.normal) + '</td></tr>' +
+    '<tr><th>Tema</th><td colspan="3">' + esc(al.tema || '—') + '</td></tr>' +
+    '<tr><th>Registro</th><td>' + fmt(al.creado) + '</td><th>Inicio de semestre</th><td>' + fmt(S.conf.inicio) + '</td></tr></table>';
+  h += '<h2>Visión general</h2>' +
+    '<div class="wtr-row"><b>Avance total:</b> <span class="wtr-grow">' + bar(r.pct, '', id) + '</span> <b>' + r.pct + '%</b> <span class="wtr-bad ' + r.nivel + '">' + r.nivel + '</span></div>' +
+    '<p style="font-size:12.5px">Esperado a la fecha: ' + r.exp + '% · Semana ' + r.sem + '</p>' +
+    (prog ? '<p style="font-size:12.5px">Plan de esta semana ' + prog.sem + ': <b>' + (prog.tareas.length ? prog.tareas.map(function (x) { return esc(x.t); }).join(' · ') : 'sin tareas puntuales listadas') + '</b>' + (prog.atrasos.length ? ' · con <b>' + prog.atrasos.length + '</b> pendiente(s) de semanas previas' : '') + '</p>' : '') +
+    (r.next ? '<p style="font-size:12.5px">Próximo paso: <b>«' + esc(r.next.t) + '»</b> (Semana ' + r.next.sem + ')</p>' : '');
+  h += '<h2>Avance por fase</h2><table><tr><th>Fase</th><th>%</th><th style="width:40%"></th><th>Referencia</th><th>Entregables</th></tr>';
+  FASES.forEach(function (f) {
+    var fs = faseStats(id, f.bs); var fr = r.fases && r.fases.filter(function (x) { return x.f === f.n; })[0];
+    h += '<tr><td>' + esc(f.n) + '</td><td><b>' + fs.pct + '%</b></td><td><div class="wtr-bar"><i style="width:' + fs.pct + '%"></i></div></td><td>' + (fr ? fr.exp + '%' : '—') + '</td><td>' + fs.c + '/' + fs.t + '</td></tr>';
+  });
+  h += '</table>';
+  h += '<h2>Puertas</h2><table><tr><th>Puerta</th><th>Semana</th><th>Score</th><th>Requisitos</th><th>Estado</th></tr>';
+  PUERTAS.forEach(function (p) {
+    var sc = puertaScore(id, p); var log = puertaLograda(id, p);
+    h += '<tr><td>' + esc(p.nombre) + '</td><td>' + p.sem + '</td><td><b>' + sc.score + '</b>/100</td><td>' + sc.ok + '/' + sc.tot + '</td><td>' + (log ? '✅ Lograda' : '◔ Pendiente') + '</td></tr>';
+  });
+  h += '</table>';
+  if (mz > 0) h += '<p style="font-size:12px">🧩 Matriz de congruencia de la Guía del tesista: <b>' + mz + '/15</b> celdas con contenido.</p>';
+  h += '<h2>Detalle de entregables</h2>';
+  FASES.forEach(function (f) {
+    h += '<table><tr><th colspan="4">' + esc(f.n) + '</th></tr><tr><th>Bloque</th><th>Entregable</th><th>Estándar verificable</th><th>Fecha de entrega / evidencia</th></tr>';
+    f.bs.forEach(function (n) {
+      var ar = block(al.modalidad, n);
+      ar.forEach(function (it, i) {
+        var k = 'b' + n + '-' + i; var st = !!e[k]; var ev = evidGet(id, k);
+        h += '<tr style="opacity:' + (st ? '1' : '.55') + '"><td>' + n + '</td><td>' + (st ? '✓ ' : '○ ') + esc(it.t) + '</td><td>' + esc(it.c) + '</td><td>' + (st ? (ev && ev.f ? ev.f : '—') : '') + (ev && ev.u ? ' · <a href="' + esc(safeUrl(ev.u)) + '">enlace</a>' : '') + (ev && ev.n ? '<br><span class="wtr-ids">' + esc(ev.n) + '</span>' : '') + '</td></tr>';
+      });
+    });
+    h += '</table>';
+  });
+  if (bl.length) {
+    h += '<h2>Bitácora de asesorías (' + bl.length + ')</h2><table><tr><th>Fecha</th><th>Nota</th></tr>';
+    bl.slice(0, 15).forEach(function (x) { h += '<tr><td>' + fmt(x.f) + '</td><td>' + esc(x.n) + '</td></tr>'; });
+    h += '</table>';
+  }
+  h += '<div class="sig">Atentamente,<br>' + esc(S.perfil.nombre || 'El/la director(a) de tesis') + '<br>' + esc(S.perfil.inst || '') + '</div></div>';
+  return h;
+}
+function openInforme(id) {
+  var old = document.querySelector('.wtr-modal'); if (old && old.parentNode) old.parentNode.removeChild(old);
+  var wrap = document.getElementById(WRAP) || document.getElementById('wtr');
+  if (!wrap) return;
+  var m = document.createElement('div');
+  m.className = 'wtr-modal';
+  m.innerHTML = '<div class="wtr-modal-box">' + informeHTML(id) +
+    '<div class="wtr-modal-foot"><button class="wtr-btn gold" data-act="print">🖨 Imprimir / PDF</button>' +
+    '<button class="wtr-btn line" data-act="printClose">✕ Cerrar</button></div></div>';
+  wrap.appendChild(m); m.scrollTop = 0;
+}
+function doPrint() { document.body.classList.add('wtr-pr'); setTimeout(function () { window.print(); }, 60); }
+if (window.addEventListener) {
+  window.addEventListener('afterprint', function () { document.body.classList.remove('wtr-pr'); });
+  window.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') { var mo = document.querySelector('.wtr-modal'); if (mo && mo.parentNode) mo.parentNode.removeChild(mo); } });
+}
+function csvCohorte() {
+  var cols = ['Nombre', 'Licenciatura', 'Modalidad', 'Ritmo', 'Tema', 'Semana', 'Avance %', 'Riesgo', 'Fase actual', 'Puerta 1', 'Puerta 2', 'Puerta 3', 'Puerta 4', 'Proxima cita', 'Ultima asesoria'];
+  var q = function (v) { var s = String(v == null ? '' : v); return '"' + s.replace(/"/g, '""') + '"'; };
+  var rows = [cols.map(q).join(',')];
+  S.alumnos.forEach(function (al) {
+    var r = riesgo(al.id);
+    var faseNm = r.next ? ((FASES.filter(function (f) { return f.bs.indexOf(r.next.b) >= 0; })[0] || {}).n || '—') : 'Completa';
+    var pc = proxCita(al.id); var lc = lastCita(al.id);
+    var vals = [al.nombre, al.lic, al.modalidad, (RITMO[al.ritmo] || RITMO.normal), al.tema || '', r.sem, r.pct, r.nivel, faseNm];
+    PUERTAS.forEach(function (p) { vals.push(puertaLograda(al.id, p) ? 'Si' : 'No'); });
+    vals.push(pc ? pc.f + ' ' + pc.h : ''); vals.push(lc ? lc.f : '');
+    rows.push(vals.map(q).join(','));
+  });
+  return '\ufeff' + rows.join('\n');
+}
+function downloadCSV() {
+  var url = URL.createObjectURL(new Blob([csvCohorte()], { type: 'text/csv;charset=utf-8' }));
+  var a = document.createElement('a'); a.href = url; a.download = 'tutoria-cohorte.csv'; document.body.appendChild(a); a.click();
+  setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(url); }, 150);
+}
+function saveEvidencia(a, k) {
+  var box = document.querySelector('.wtr-evid[data-a="' + a + '"][data-k="' + k + '"]');
+  if (!box) return;
+  var f = box.querySelector('.wtr-ev-f'); var u = box.querySelector('.wtr-ev-u'); var n2 = box.querySelector('.wtr-ev-n');
+  var ev = evidGet(a, k) || {};
+  var e2 = est(a);
+  e2[k] = { f: (f && f.value) || ev.f || hoy(), u: (u && u.value) || ev.u || '', n: (n2 && n2.value) || ev.n || '' };
+  save(KEY + 'av_' + a, e2); render();
+}
+function sincroMatriz(id) {
+  var mz = leerMatriz(); var e2 = est(id);
+  var done = !!e2['b8-0'];
+  if (mz >= 15) e2['b8-0'] = 1;
+  save(KEY + 'av_' + id, e2);
+  alert(mz >= 15 ? (done ? '✔ Matriz con ' + mz + '/15 celdas llenas (ya estaba marcada la Puerta 2).' : '✔ Matriz de la Guía con ' + mz + '/15 celdas: marcamos «Matriz de congruencia completa» (Puerta 2).') : 'La matriz de la Guía solo tiene ' + mz + '/15 celdas con contenido: revisa el bloque 8 con el tesista.');
+  render();
+}
+function planResumen(al) {
+  var p = planSemanal(al.id);
+  if (!p) return '';
+  var s = '';
+  if (p.tareas.length) s += 'Esta semana: ';
+  p.tareas.slice(0, 3).forEach(function (x) { s += '✓ ' + esc(x.t) + '.'; });
+  if (p.atrasos.length) s += ' ' + p.atrasos.length + ' pendiente(s) vencida(s).';
+  return s;
+}
+function ritaSel(al) {
+  var opts = ['acelerado', 'normal', 'rezagado'].map(function (v) {
+    return '<option value="' + v + '"' + ((al.ritmo || 'normal') === v ? ' selected' : '') + '>' + (RITMO[v] || v) + '</option>';
+  }).join('');
+  return '<span class="wtr-selr"><select data-a="' + al.id + '" class="wtr-ritmo-set wtr-selr" style="border:0;font:inherit">' + opts + '</select></span>';
+}
+
+function renderResumen() {
+  var h = '';
+  if (!S.alumnos.length) {
+    h = head() + '<div class="wtr-body">' +
+      emptyState('👥', 'Aún no registras tesistas. Añade el primero o carga un ejemplo para explorar el módulo.', 'demo', '✨ Cargar ejemplo') +
+      '<div class="wtr-card"><h2>¿Qué hace este módulo?</h2><p class="wtr-sub">Seguimiento inteligente diseñado para el director de tesis:</p>' +
+      '<ul><li><b>Checklist por bloque</b> (15 bloques, 38 entregables) con «definición de hecho»: criterio claro para marcar algo como cumplido.</li>' +
+      '<li><b>Riesgo automático</b> (bajo / medio / alto) con causas y siguiente acción calculada.</li>' +
+      '<li><b>4 Puertas</b> con requisitos verificables y aviso cuando vencen.</li>' +
+      '<li><b>Cronograma de 16 semanas</b> con fechas reales y comparación esperado vs real.</li>' +
+      '<li><b>Agenda de asesorías</b> y exportación a <b>iCal</b> (Google/Outlook) y <b>respaldo JSON</b>.</li></ul>' +
+      '<p class="wtr-hint">Tip: define la fecha de inicio del semestre en <b>Ajustes</b> y todo el cronograma se recalcula automáticamente.</p></div></div>';
+    return h;
+  }
+  var avisos = alertas();
+  h = head() + '<div class="wtr-body">';
+  if (avisos.length) {
+    h += '<div class="wtr-card"><h2>🤖 Avisos inteligentes</h2>';
+    avisos.forEach(function (a) { h += '<div class="wtr-alert ' + a.cls + '">' + a.icon + '<span>' + a.txt + '</span></div>'; });
+    h += '</div>';
+  }
+  h += '<h2 class="wtr-fase" style="margin-top:6px">Cartera de tesistas</h2><div class="wtr-grid">';
+  S.alumnos.forEach(function (al) {
+    var r = riesgo(al.id);
+    var faseNm = r.next ? FASES.find(function (f) { return f.bs.indexOf(r.next.b) >= 0; }).n : 'Completa';
+    var pc = proxCita(al.id); var lc = lastCita(al.id);
+    h += '<button class="wtr-al" data-act="selAl" data-a="' + al.id + '">' +
+      '<span class="wtr-row"><b style="color:var(--wtr-azul)">' + esc(al.nombre) + '</b>' +
+      '<span class="wtr-ritmo ' + r.ritmo + '">' + (RITMO[r.ritmo] || RITMO.normal) + '</span>' +
+      '<span class="wtr-bad ' + r.nivel + '">' + (r.nivel === 'bajo' ? '● Bajo' : r.nivel === 'medio' ? '● Medio' : '⚠ Alto') + '</span></span>' +
+      '<span class="wtr-ids">' + esc(al.lic) + ' · ' + esc(al.modalidad) + '</span>' +
+      '<span style="font-size:12.5px;color:var(--wtr-gris)">' + esc(al.tema || 'Sin tema definido') + '</span>' +
+      '<div class="wtr-row"><div class="wtr-grow">' + bar(r.pct, '', al.id) + '</div><b style="font-size:13px">' + r.pct + '%</b></div>' +
+      '<span class="wtr-ids">Ruta: ' + faseNm + ' · Sem ' + r.sem + '</span>' +
+      (r.next ? '<span class="wtr-ids">▶ <b>' + esc(r.next.t) + '</b> ' + weekChip(r.next.sem) + '</span>' : '<span class="wtr-ids">▶ Ruta completa cumplida</span>') +
+      (pc ? '<span class="wtr-ids">📅 Próxima cita: ' + fmt(pc.f) + ' ' + esc(pc.h) + ' (' + esc(pc.m) + ')</span>' : '<span class="wtr-ids">📅 Sin cita próxima</span>') +
+      (lc ? '<span class="wtr-ids">🗒 Última asesoría: ' + fmt(lc.f) + '</span>' : '') +
+      (planResumen(al) ? '<span class="wtr-ids">🗓 ' + planResumen(al) + '</span>' : '') +
+      '</button>';
+  });
+  h += '</div><div class="wtr-card" style="margin-top:16px"><h2>⚙ Ajustes</h2>' +
+    '<div class="wtr-form"><span><label class="wtr-lab">Tu nombre</label><input class="wtr-input wtr-perfil-nombre" type="text" value="' + esc(S.perfil.nombre || '') + '" placeholder="Dr./Dra. apellidos"></span>' +
+    '<span><label class="wtr-lab">Institución</label><input class="wtr-input wtr-perfil-inst" type="text" value="' + esc(S.perfil.inst || '') + '" placeholder="FCA-UAS"></span>' +
+    '<span><label class="wtr-lab">Inicio del semestre</label><input class="wtr-input wtr-conf-inicio" type="date" value="' + S.conf.inicio + '"></span></div>' +
+    '<div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px">' +
+    '<button class="wtr-btn line sm" data-act="saveConfig">💾 Guardar ajustes</button>' +
+    '<button class="wtr-btn gold sm" data-act="demo">✨ Cargar ejemplo</button>' +
+    '<button class="wtr-btn line sm" data-act="expJSON">⬇ Respaldo JSON</button>' +
+    '<button class="wtr-btn line sm" data-act="impJSON">⬆ Restaurar JSON</button>' +
+    '<button class="wtr-btn line sm" data-act="csv">⬇ Concentrado cohorte (CSV)</button>' +
+    '<button class="wtr-btn sm" data-act="ics">📅 Exportar iCal</button>' +
+    '<button class="wtr-btn dang sm" data-act="reset">🗑 Restablecer todo</button></div>' +
+    '<input type="file" accept="application/json" style="display:none" class="wtr-file">' +
+    '</div></div>';
+  return h;
+}
+
+function renderAlumnos() {
+  var h = head() + '<div class="wtr-body"><div class="wtr-grid n2">' +
+    '<div class="wtr-card"><h2>👥 Registro de tesistas</h2><p class="wtr-sub">Añade cada alumno; se abre al seleccionarlo del listado.</p>' +
+    '<div class="wtr-form"><span><label class="wtr-lab">Nombre completo</label><input class="wtr-input wtr-f-nombre" placeholder="Nombre y apellidos"></span>' +
+    '<span><label class="wtr-lab">Licenciatura</label><input class="wtr-input wtr-f-lic" placeholder="Contaduría / Administración…"></span>' +
+    '<span><label class="wtr-lab">Modalidad</label><select class="wtr-select wtr-f-mod"><option value="Cuantitativa">Cuantitativa</option><option value="Cualitativa">Cualitativa</option><option value="Mixta">Mixta</option></select></span>' +
+    '<span style="grid-column:1/-1"><label class="wtr-lab">Tema de tesis</label><input class="wtr-input wtr-f-tema" placeholder="Título o idea preliminar del tema"></span></div>' +
+    '<div style="margin-top:10px;display:flex;gap:8px"><button class="wtr-btn gold" data-act="addAl">➕ Registrar alumno</button></div>' +
+    '<h3>Listado</h3>';
+  if (!S.alumnos.length) h += '<p class="wtr-ids">Sin tesistas todavía.</p>';
+  S.alumnos.forEach(function (al) {
+    var r = riesgo(al.id);
+    h += '<div class="wtr-row" style="padding:6px 0;border-bottom:1px dashed #e6ecf3">' +
+      '<button class="wtr-btn line sm" data-act="selAl" data-a="' + al.id + '" style="flex:1;text-align:left">' + esc(al.nombre) + '</button>' +
+      '<span class="wtr-bad ' + r.nivel + '">' + r.pct + '%</span>' +
+      '<button title="Borrar tesista" class="wtr-btn dang sm" data-act="delAl" data-a="' + al.id + '">✕</button></div>';
+  });
+  h += '</div>';
+
+  var sel = S.sel && alumno(S.sel) ? S.sel : (S.alumnos[0] ? S.alumnos[0].id : null);
+  if (sel) {
+    var al = alumno(sel); var r = riesgo(al.id);
+    h += '<div class="wtr-card"><h2>📋 Ficha — ' + esc(al.nombre) + '</h2><p class="wtr-sub">' + esc(al.lic) + ' · ' + esc(al.modalidad) + ' · registrado ' + fmt(al.creado) + ' · ritmo: ' + ritaSel(al) + '</p>';
+    h += '<div class="wtr-row"><div class="wtr-grow">' + bar(r.pct, '', sel) + '</div><b>' + r.pct + '%</b><span class="wtr-bad ' + r.nivel + '">' + r.nivel + '</span></div>';
+    h += '<p class="wtr-sub" style="margin-top:8px"><b>Tema:</b> ' + esc(al.tema || '—') + '</p>';
+    h += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 4px">' +
+      '<button class="wtr-btn sm" data-act="fichaRuta" data-a="' + sel + '">🗺 Ver su ruta</button>' +
+      '<button class="wtr-btn sm" data-act="informe" data-a="' + sel + '">🖨 Informe PDF/imprimir</button>' +
+      '<button class="wtr-btn line sm" data-act="fichaGuia" data-a="' + sel + '">📘 Abrir guía del tesista</button></div>';
+    if (r.factors.length) {
+      h += '<h3>🔍 Diagnóstico</h3>';
+      r.factors.forEach(function (f) { h += '<div class="wtr-alert md">⚠ <span>' + esc(f) + '</span></div>';});
+    } else { h += '<div class="wtr-alert ok">✅ <span>Sin alertas: el tesista va en tiempo y forma.</span></div>'; }
+    if (r.next) h += '<div class="wtr-alert ok">▶ <span><b>Siguiente acción:</b> en «' + esc(BLOCKS[r.next.b].t) + '» cumplir «' + esc(r.next.t) + '» ' + weekChip(r.next.sem) + '<br><span class="wtr-ids">Estándar: ' + esc(r.next.c) + '</span></span></div>';
+    h += '<h3>🚪 Puertas</h3>';
+    var mz = leerMatriz();
+    PUERTAS.forEach(function (p) {
+      var log = puertaLograda(sel, p); var sc = puertaScore(sel, p); var done = sc.ok;
+      h += '<div class="wtr-puerta ' + (log ? 'log' : '') + '"><b>' + (log ? '✅ ' : '◔ ') + esc(p.nombre) + '</b> ' + weekChip(p.sem) +
+        '<span class="wtr-bad ' + (log ? 'bajo' : 'med') + '">' + done + '/' + p.reqs.length + '</span>' +
+        '<span class="wtr-escore"><div class="wtr-bar"><i style="width:' + sc.score + '%" class="' + (sc.score === 100 ? '' : 'late') + '"></i></div>' +
+        '<span style="font-size:11.5px;font-weight:800">' + sc.score + '/100</span></span>' +
+        '<div style="margin-top:6px">' + '<div class="wtr-grow"></div></div>' +
+        '<div style="margin-top:6px">' + p.reqs.map(function (rq) {
+          var st = !!est(sel)[rq[0]];
+          return '<button class="wtr-btn line sm" data-act="' + (st ? 'unchk' : 'chk') + '" data-a="' + sel + '" data-k="' + rq[0] + '" style="margin:2px">' + (st ? '✓' : '○') + ' ' + esc(rq[1]) + '</button>';
+        }).join('') + '</div></div>';
+    });
+    h += '<div class="wtr-form" style="margin-top:6px"><span style="grid-column:1/-1;display:flex;gap:8px;align-items:center">' +
+      '<span class="wtr-ids">🧩 Matriz de congruencia de la Guía: <b>' + mz + '/15</b> celdas con contenido.</span>' +
+      '<button class="wtr-btn line sm" data-act="synMZ" data-a="' + sel + '">⚡ Sincronizar matriz</button></span></div>';
+    h += '<h3>🗒 Bitácora de asesorías</h3>';
+    var bl = bit(sel).slice().sort(function (a, b) { return a.f < b.f ? 1 : -1; });
+    if (bl.length) {
+      bl.slice(0, 8).forEach(function (x) {
+        h += '<div class="wtr-alert ok" style="margin:4px 0">🗒 <span><b>' + fmt(x.f) + '</b> ' + esc(x.n) + '</span></div>';
+      });
+    } else h += '<p class="wtr-ids">Sin notas registradas.</p>';
+    h += '<div class="wtr-form"><span><label class="wtr-lab">Fecha</label><input type="date" class="wtr-input wtr-b-f" value="' + hoy() + '"></span>' +
+      '<span style="grid-column:1/-1"><label class="wtr-lab">Nota de la asesoría</label><input class="wtr-input wtr-b-n" placeholder="Acuerdos, avances, pendientes…"></span></div>' +
+      '<div style="margin-top:8px"><button class="wtr-btn gold sm" data-act="addBit" data-a="' + sel + '">➕ Registrar asesoría</button> ' +
+      '<button class="wtr-btn line sm" data-act="expJSON">⬇ Respaldo JSON</button></div>';
+    h += '</div>';
+  } else {
+    h += '<div class="wtr-card">' + emptyState('👤', 'Registra un tesista para ver su ficha, checklist, puertas y bitácora.', 'demo', '✨ Cargar ejemplo') + '</div>';
+  }
+  h += '</div></div>';
+  return h;
+}
+
+function renderRuta() {
+  var al = S.sel ? alumno(S.sel) : (S.alumnos[0] || null);
+  var h = head() + '<div class="wtr-body">';
+  h += '<div class="wtr-card"><h2>🗺 Ruta completa del tesista</h2>' +
+    '<p class="wtr-sub">Todo lo que el alumno debe hacer <b>de la página 1 hasta la defensa</b>, bloque por bloque. Cada casilla muestra su estándar verificable («definición de hecho»).</p>';
+  if (!al) {
+    h += emptyState('👥', 'Registra (o selecciona) un tesista para activar su ruta.', 'demo', '✨ Cargar ejemplo');
+    h += '</div></div>'; return h;
+  }
+  h += '<div class="wtr-alert ok">👥 <span>Ruta de <b>' + esc(al.nombre) + '</b> · ' + pctAlumno(al.id) + '% completado' +
+    (al.tema ? ' · <i>' + esc(al.tema) + '</i>' : '') + '</span></div>';
+  var r0 = riesgo(al.id);
+  var ps = planSemanal(al.id);
+  h += '<div class="wtr-card"><h2>🗓 Plan de esta semana (Semana ' + ps.sem + ')</h2><div class="wtr-plan">';
+  if (ps.tareas.length) {
+    ps.tareas.forEach(function (t) { h += '<div class="wtr-tarea"><span style="font-size:16px">▢</span><span class="wtr-grow">' + esc(t.t) + ' <span class="wtr-ids">(Bloque ' + t.b + ')</span></span><button class="wtr-btn line sm" data-act="chk" data-a="' + al.id + '" data-k="' + t.key + '">Marcar hecho</button></div>'; });
+  } else h += '<div class="wtr-tarea"><span>✅</span><span class="wtr-grow">Sin tareas puntuales de la semana. Avanza al siguiente bloque de la ruta.</span></div>';
+  if (ps.atrasos.length) h += '<span class="wtr-ids" style="color:var(--wtr-alto)">⚠ ' + ps.atrasos.length + ' pendiente(s) de semanas anteriores ' + ps.atrasos.slice(0, 2).map(function (x) { return '«' + esc(x.t) + '»'; }).join(', ') + '</span>';
+  h += '</div></div>';
+  FASES.forEach(function (f) {
+    var fs = faseStats(al.id, f.bs);
+    var fr = r0.fases && r0.fases.filter(function (x) { return x.f === f.n; })[0];
+    h += '<div class="wtr-fase">' + esc(f.n) + ' — ' + f.sem + ' · <span class="wtr-bad ' + (fs.pct === 100 ? 'bajo' : 'med') + '">' + fs.pct + '%</span>' +
+      (fr ? ' <span class="wtr-ids">(referencia ' + fr.exp + '% · ' + fr.lvl + ')</span>' : '') + '</div>' +
+      '<div class="wtr-card" style="padding:10px 12px"><div class="wtr-grow">' + bar(fs.pct, '', al.id) + '</div>';
+    f.bs.forEach(function (n) {
+      var ar = block(al.modalidad, n); var c = 0;
+      ar.forEach(function (_, i) { if (est(al.id)['b' + n + '-' + i]) c++; });
+      var sw = semanaDeBloque(n);
+      h += '<details class="wtr-dets" ' + (c < ar.length && sw <= semanaActual() ? 'open' : '') + '>' +
+        '<summary>' + BLOCKS[n].icon + ' <span class="wtr-grow">' + esc(BLOCKS[n].t) + '</span> ' + weekChip(sw) +
+        '<span class="wtr-bad ' + (c === ar.length ? 'bajo' : 'med') + '">' + c + '/' + ar.length + '</span></summary>' +
+        '<div class="in">';
+      ar.forEach(function (it, i) {
+        var k = 'b' + n + '-' + i; var st = !!est(al.id)[k]; var ev = evidGet(al.id, k); var ex = i >= baseLen(n);
+        h += '<div class="wtr-it ' + (st ? 'done' : '') + '">' +
+          '<button class="cd" data-act="' + (st ? 'unchk' : 'chk') + '" data-a="' + al.id + '" data-k="' + k + '" title="Marcar como entregado">✓</button>' +
+          '<div class="tx"><b>' + esc(it.t) + '</b><span>Estándar: ' + esc(it.c) + '</span>' +
+          (ex ? ' <span class="wtr-week">' + esc(al.modalidad) + '</span>' : '') +
+          (st ? '<details class="wtr-evid" data-a="' + al.id + '" data-k="' + k + '"><summary class="wtr-ids">📎 Evidencia' + (ev ? ': ' + (ev.f || '') + (ev.n ? ' · ' + esc(ev.n) : '') : '') + '</summary>' +
+            '<div class="wtr-form"><span><label class="wtr-lab">Fecha de entrega</label><input type="date" class="wtr-input wtr-ev-f" value="' + ((ev && ev.f) || '') + '"></span>' +
+            '<span><label class="wtr-lab">Enlace (Drive/archivo)</label><input class="wtr-input wtr-ev-u" value="' + ((ev && ev.u) || '') + '" placeholder="https://…"></span>' +
+            '<span style="grid-column:1/-1"><label class="wtr-lab">Nota del director</label><input class="wtr-input wtr-ev-n" value="' + ((ev && ev.n) || '') + '" placeholder="Observaciones del entregable"></span></div>' +
+            '<button class="wtr-btn gold sm" data-act="evd" data-a="' + al.id + '" data-k="' + k + '" style="margin-top:6px">💾 Guardar evidencia</button></details>' : '') +
+          '</div>' + weekChip(semanaDeKey(k)) + '</div>';
+      });
+      h += '<div style="margin:8px 0 2px">' +
+        '<a class="wtr-navlink" href="#" data-act="deck" data-n="' + n + '">🎞 Ver diapositivas de este bloque</a> · ' +
+        '<a class="wtr-navlink" href="#" data-act="guide">📘 Ir a la guía del tesista</a></div></div></details>';
+    });
+    h += '</div>';
+  });
+  h += '<div class="wtr-card"><h2>🧭 Última fase de la ruta</h2><p class="wtr-sub">Defensa ante comité, registro de la tesis y entrega final.</p>' +
+    '<p>Después de la Puerta 4, el tesista: realiza los <b>ensayos de defensa</b> coordinados en asesoría, presenta ante el <b>comité</b>, incorpora las observaciones, gestiona los <b>formatos de titulación</b> de la Unidad y entrega la versión final. El director le acompaña en cada uno de estos pasos usando esta agenda.</p></div>';
+  h += '</div>';
+  return h;
+}
+
+function renderCronograma() {
+  var al = S.sel ? alumno(S.sel) : (S.alumnos[0] || null);
+  var w = semanaActual(); var exp = al ? expectedPctFor(al.id) : expectedPct();
+  var h = head() + '<div class="wtr-body"><div class="wtr-grid n2">' +
+    '<div class="wtr-card"><h2>🗓 Cronograma de 16 semanas</h2>' +
+    '<p class="wtr-sub">Inicio del semestre: <b>' + fmt(S.conf.inicio) + '</b> · hoy = <b>Semana ' + w + '</b> · ritmo esperado ' + exp + '%' + (al ? ' (' + (RITMO[al.ritmo] || RITMO.normal) + ')' : '') + '</p>' +
+    '<div class="wtr-table-wrap" style="overflow-x:auto"><table class="wtr-table"><thead><tr><th>Sem</th><th>Fechas</th><th>Bloques a trabajar</th><th>Hito / Puerta</th>' +
+    (al ? '<th>Avance real</th>' : '') + '</tr></thead><tbody>';
+  SEMANAS.forEach(function (sm) {
+    var lunes = lunesDeSem(sm.s); var domy = addDays(lunes, 6);
+    var chips = sm.b.map(function (n) { return '<span class="wtr-chip">' + n + ' · ' + BLOCKS[n].t.split(' ').slice(0, 3).join(' ') + '</span>'; }).join(' ');
+    var statsCells = '';
+    if (al) { var fs = faseStats(al.id, sm.b); statsCells = '<td>' + fs.pct + '%</td>'; }
+    var pTxt = sm.p ? '<b style="color:' + (sm.p <= w ? '#b3261e' : 'var(--wtr-oro)') + '">' + esc(sm.h) + '</b>' : esc(sm.h);
+    h += '<tr class="' + (sm.s === w ? 'thiswk' : (sm.s < w ? 'ovrd' : '')) + '">' +
+      '<td><b>' + sm.s + '</b></td><td style="white-space:nowrap">' + pad(lunes.getDate()) + '/' + pad(lunes.getMonth() + 1) + '–' + pad(domy.getDate()) + '/' + pad(domy.getMonth() + 1) + '</td>' +
+      '<td style="min-width:150px">' + chips + '</td><td style="min-width:170px">' + pTxt + '</td>' + statsCells + '</tr>';
+  });
+  h += '</tbody></table></div></div>';
+
+  h += '<div class="wtr-card"><h2>📊 Esperado vs real</h2><p class="wtr-sub">' + (al ? 'Tesista: <b>' + esc(al.nombre) + '</b> · ritmo ' + (RITMO[al.ritmo] || RITMO.normal) : 'Selecciona un tesista en «Alumnos» o «Resumen».') + '</p>';
+  if (al) {
+    var pct = pctAlumno(al.id); var late = pct < exp;
+    h += '<div class="wtr-row"><div class="wtr-grow">' + bar(pct, nilOrLate(late), al.id) + '</div><b>' + pct + '%</b></div>' +
+      '<p class="wtr-ids">Esperado a la fecha (' + (RITMO[al.ritmo] || RITMO.normal) + '): ' + exp + '% · ' + (late ? 'Detrás del ritmo esperado.' : 'En tiempo o adelantado.') + '</p>';
+    h += '<h3>Puertas</h3>';
+    PUERTAS.forEach(function (p) {
+      var log = puertaLograda(al.id, p); var vence = p.sem <= w;
+      h += '<div class="wtr-row"><span class="wtr-grow"><b>' + esc(p.nombre) + '</b></span>' + weekChip(p.sem) +
+        '<span class="wtr-bad ' + (log ? 'bajo' : (vence ? 'alto' : 'med')) + '">' + (log ? 'Lograda' : (vence ? 'Vencida' : 'Pendiente')) + '</span></div>';
+    });
+  } else h += '<p class="wtr-ids">Registra un tesista para comparar su avance (la barra aparece automáticamente).</p>';
+  h += '</div></div></div>';
+  return h;
+}
+function nilOrLate(b) { return b ? 'late' : ''; }
+
+function renderCitas() {
+  var h = head() + '<div class="wtr-body"><div class="wtr-card"><h2>📅 Agenda de asesorías</h2>' +
+    '<p class="wtr-sub">Programa citas, márcalas como realizadas y expórtalas a Google Calendar / Outlook con un clic.</p>';
+  if (S.alumnos.length) {
+    h += '<div class="wtr-form"><span><label class="wtr-lab">Tesista</label><select class="wtr-select wtr-c-a">' +
+      S.alumnos.map(function (a) { return '<option value="' + a.id + '">' + esc(a.nombre) + '</option>'; }).join('') + '</select></span>' +
+      '<span><label class="wtr-lab">Fecha</label><input type="date" class="wtr-input wtr-c-f" value="' + hoy() + '"></span>' +
+      '<span><label class="wtr-lab">Hora</label><input type="time" class="wtr-input wtr-c-h" value="10:00"></span>' +
+      '<span style="grid-column:1/-1"><label class="wtr-lab">Motivo</label><input class="wtr-input wtr-c-m" placeholder="Revisión de avances, estado del arte…"></span></div>' +
+      '<div style="margin-top:10px;display:flex;gap:8px"><button class="wtr-btn gold" data-act="addCita">➕ Registrar cita</button>' +
+      '<button class="wtr-btn line" data-act="ics">📅 Exportar iCal</button></div>';
+  } else h += '<p class="wtr-ids">Registra tesistas para poder programar citas.</p>';
+  h += '</div>';
+
+  var cs = sortCitas();
+  var futuras = cs.filter(function (c) { return !c.d; });
+  var hechas = cs.filter(function (c) { return c.d; });
+  if (!cs.length) h += '<div class="wtr-card">' + emptyState('🗓', 'Sin citas aún. Agenda la primera asesoría y define nuevos acuerdos.', 'demo', '✨ Cargar ejemplo') + '</div>';
+  if (futuras.length) {
+    h += '<h2 class="wtr-fase">Próximas</h2><div class="wtr-card">';
+    futuras.forEach(function (c) {
+      var al = alumno(c.a); var tarde = c.f < hoy();
+      h += '<div class="wtr-row" style="padding:8px 0;border-bottom:1px dashed #e6ecf3">' +
+        '<span class="wtr-ids" style="font-size:16px">📌</span>' +
+        '<div class="wtr-grow"><b>' + (al ? esc(al.nombre) : 'Director') + '</b> · ' + fmt(c.f) + ' ' + esc(c.h || '') + '<br><span class="wtr-ids">' + esc(c.m || '') + (c.n ? ' — ' + esc(c.n) : '') + '</span></div>' +
+        (tarde ? '<span class="wtr-bad alto">Atrasada</span>' : '') +
+        '<button class="wtr-btn sm" data-act="doneCita" data-c="' + c.id + '">✔ Hecha</button>' +
+        '<button class="wtr-btn dang sm" data-act="delCita" data-c="' + c.id + '">✕</button></div>';
+    });
+    h += '</div>';
+  }
+  if (hechas.length) {
+    h += '<h2 class="wtr-fase">Realizadas</h2><div class="wtr-card">';
+    hechas.slice().reverse().slice(0, 10).forEach(function (c) {
+      var al = alumno(c.a);
+      h += '<div class="wtr-row" style="padding:6px 0;border-bottom:1px dashed #e6ecf3"><span class="wtr-ids">🗒</span>' +
+        '<div class="wtr-grow">' + (al ? esc(al.nombre) : 'Director') + ' · ' + fmt(c.f) + ' <span class="wtr-ids">' + esc(c.m || '') + '</span></div>' +
+        '<button class="wtr-btn line sm" data-act="delCita" data-c="' + c.id + '">✕</button></div>';
+    });
+    h += '</div>';
+  }
+  h += '</div>';
+  return h;
+}
+
+function render() {
+  var root = document.getElementById('wtr');
+  if (!root) return;
+  var h = '';
+  if (S.panel === 'resumen') h = renderResumen();
+  else if (S.panel === 'alumnos') h = renderAlumnos();
+  else if (S.panel === 'ruta') h = renderRuta();
+  else if (S.panel === 'cronograma') h = renderCronograma();
+  else h = renderCitas();
+  root.innerHTML = h;
+}
+
+/* ---------------- eventos ------------- */
+function onAddAl() {
+  var n = (document.querySelector('.wtr-f-nombre') || {}).value || '';
+  var lic = (document.querySelector('.wtr-f-lic') || {}).value || '';
+  var mod = (document.querySelector('.wtr-f-mod') || {}).value || 'Cuantitativa';
+  var tema = (document.querySelector('.wtr-f-tema') || {}).value || '';
+  if (!n.trim()) { alert('Escribe al menos el nombre del tesista.'); return; }
+  var a = { id: uid(), nombre: n.trim(), lic: lic.trim() || '—', tema: tema.trim(), modalidad: mod, ritmo: 'normal', creado: hoy() };
+  S.alumnos.push(a); persistAl(); S.sel = a.id; S.panel = 'ruta'; render();
+}
+function onAddCita(alSelId) {
+  var av = (document.querySelector('.wtr-c-a') || {}).value;
+  var f = (document.querySelector('.wtr-c-f') || {}).value || hoy();
+  var hh = (document.querySelector('.wtr-c-h') || {}).value || '10:00';
+  var m = (document.querySelector('.wtr-c-m') || {}).value || '';
+  var aid = alSelId || av || (S.alumnos[0] || {}).id;
+  if (!aid) return;
+  S.citas.push({ id: 'c' + Date.now(), a: aid, f: f, h: hh, m: m, n: '', d: 0 });
+  persistCi(); render();
+}
+function rootClick(e) {
+  var el = e.target.closest('[data-act]');
+  if (!el) return;
+  var act = el.getAttribute('data-act');
+  var a = el.getAttribute('data-a'); var k = el.getAttribute('data-k'); var cid = el.getAttribute('data-c'); var n = el.getAttribute('data-n');
+  if (act === 'tab') { S.panel = el.getAttribute('data-p'); render(); return; }
+  if (act === 'chk' || act === 'unchk') {
+    var e2 = est(a); if (act === 'chk') { if (e2[k] && typeof e2[k] === 'object') e2[k].f = e2[k].f || hoy(); else e2[k] = { f: hoy() }; } else delete e2[k];
+    save(KEY + 'av_' + a, e2); render(); return;
+  }
+  if (act === 'evd') { saveEvidencia(a, k); return; }
+  if (act === 'informe') { openInforme(a); return; }
+  if (act === 'csv') { downloadCSV(); return; }
+  if (act === 'synMZ') { sincroMatriz(a); return; }
+  if (act === 'print') { doPrint(); return; }
+  if (act === 'printClose') { var _m = document.querySelector('.wtr-modal'); if (_m && _m.parentNode) _m.parentNode.removeChild(_m); return; }
+  if (act === 'selAl') { S.sel = a; S.panel = 'alumnos'; render(); return; }
+  if (act === 'delAl') {
+    if (!confirm('¿Eliminar a este tesista y todo su avance?')) return;
+    S.alumnos = S.alumnos.filter(function (x) { return x.id !== a; });
+    S.citas = S.citas.filter(function (c) { return c.a !== a; });
+    LS.del(KEY + 'av_' + a); LS.del(KEY + 'bit_' + a);
+    if (S.sel === a) S.sel = S.alumnos[0] ? S.alumnos[0].id : null;
+    persistAl(); persistCi(); render(); return;
+  }
+  if (act === 'addAl') { onAddAl(); return; }
+  if (act === 'addCita') { onAddCita(); return; }
+  if (act === 'addBit') {
+    var f = (document.querySelector('.wtr-b-f') || {}).value || hoy();
+    var nn = (document.querySelector('.wtr-b-n') || {}).value || '';
+    if (!nn.trim()) { alert('Escribe la nota de la asesoría.'); return; }
+    bit(a).push({ f: f, n: nn.trim() }); save(KEY + 'bit_' + a, bit(a)); render(); return;
+  }
+  if (act === 'doneCita') { var c0 = S.citas.find(function (c) { return c.id === cid; }); if (c0) { c0.d = 1; persistCi(); render(); } return; }
+  if (act === 'delCita') { S.citas = S.citas.filter(function (c) { return c.id !== cid; }); persistCi(); render(); return; }
+  if (act === 'ics') { downloadICS(); return; }
+  if (act === 'expJSON') { exportJSON(); return; }
+  if (act === 'impJSON') { var fl = document.querySelector('.wtr-file'); if (fl) fl.click(); return; }
+  if (act === 'reset') { resetAll(); return; }
+  if (act === 'demo') { demo(); return; }
+  if (act === 'saveConfig') {
+    var pn = (document.querySelector('.wtr-perfil-nombre') || {}).value || '';
+    var pi = (document.querySelector('.wtr-perfil-inst') || {}).value || '';
+    var pi2 = (document.querySelector('.wtr-conf-inicio') || {}).value || '2026-08-17';
+    S.perfil = { nombre: pn.trim(), inst: pi.trim() };
+    if (/^\d{4}-\d{2}-\d{2}$/.test(pi2)) S.conf.inicio = pi2;
+    save(KEY + 'conf', S.conf); save(KEY + 'perfil', S.perfil); render();
+    return;
+  }
+  if (act === 'fichaRuta') { S.sel = a; S.panel = 'ruta'; render(); return; }
+  if (act === 'fichaGuia') { navGuia(); return; }
+  if (act === 'deck') { navGo(parseInt(n, 10)); return; }
+  if (act === 'guide') { navGuia(); return; }
+}
+
+/* ---------------- API pública ------------- */
+function addAlumno(d) {
+  d = d || {};
+  var a = { id: d.id || uid(), nombre: String(d.nombre || 'Sin nombre'), lic: String(d.lic || '—'), tema: String(d.tema || ''), modalidad: String(d.modalidad || 'Cuantitativa'), ritmo: (['acelerado', 'normal', 'rezagado'].indexOf(String(d.ritmo || 'normal')) >= 0 ? String(d.ritmo) : 'normal'), creado: hoy() };
+  S.alumnos.push(a); persistAl(); return a.id;
+}
+function marcar(aId, k, v) { var e2 = est(aId); if (v === false || v === undefined) delete e2[k]; else e2[k] = 1; save(KEY + 'av_' + aId, e2); }
+function setConf(o) { if (o && o.inicio) S.conf.inicio = o.inicio; save(KEY + 'conf', S.conf); }
+function refresh() { render(); }
+
+window.A360Tutor = {
+  render: render, refresh: refresh, panel: function (p) { if (PANELES.indexOf(p) >= 0) { S.panel = p; render(); } },
+  addAlumno: addAlumno, marcar: marcar, setConf: setConf, clear: resetAll,
+  alumnos: function () { return S.alumnos.slice(); },
+  riesgo: function (id) { return riesgo(id); },
+  citas: function () { return sortCitas().map(function (c) { return { alumno: alumno(c.a) ? alumno(c.a).nombre : null, fecha: c.f, hora: c.h, motivo: c.m, hecha: !!c.d }; }); },
+  ics: ics, alertas: alertas, exportarJSON: exportJSON, importarJSON: importJSON, demo: demo,
+  bpct: pctAlumno, semana: semanaActual,
+  planSemanal: function (id) { return planSemanal(id); },
+  informe: function (id) { return informeHTML(id); },
+  abreInforme: openInforme,
+  csv: csvCohorte,
+  puertaScore: function (id, p) { return puertaScore(id, PUERTAS[p - 1] || p); },
+  leerMatriz: leerMatriz, sincroMatriz: sincroMatriz,
+  evidencia: evidGet, setEvidencia: function (id, k, o) { o = o || {}; var e2 = est(id); e2[k] = { f: o.f || hoy(), u: o.u || '', n: o.n || '' }; save(KEY + 'av_' + id, e2); return e2[k]; }, guardarEvidencia: saveEvidencia
+};
+
+loadAll();
+var rootEl = document.getElementById('wrap-tutor') || document.getElementById('wtr');
+if (rootEl) {
+  rootEl.addEventListener('click', rootClick);
+  rootEl.addEventListener('change', function (ev) {
+    if (!ev.target) return;
+    var t = ev.target;
+    if (t.classList.contains('wtr-ritmo-set')) {
+      var ida = t.getAttribute('data-a'); var al2 = alumno(ida);
+      if (al2) { al2.ritmo = ['acelerado', 'normal', 'rezagado'].indexOf(t.value) >= 0 ? t.value : 'normal'; persistAl(); render(); }
+    }
+  });
+}
+if (document.getElementById(WRAP) || document.getElementById('wtr')) render();
+
+})();
+</script>
+</body>
+</html>
