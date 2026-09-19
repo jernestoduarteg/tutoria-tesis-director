@@ -146,8 +146,8 @@ class CDP {
     await A("A360Tutor.citas().length===1");
     await A("A360Tutor.ics().indexOf('Asesoría de tesis - Ana Prueba')>=0");
     await A("typeof A360Tutor.alertas==='function' && Array.isArray(A360Tutor.alertas())");
-    await ev("window.__alertTxt='';A360Tutor.panel('alumnos');(function(){var b=document.querySelector('[data-act=fichaGuia]');window._orig=window.alert;window.alert=function(m){window.__alertTxt=String(m)};b.click();window.alert=window._orig;return 1})()");
-    await A("window.__alertTxt.length>0 && window.__alertTxt.indexOf('guía')>=0");
+    await ev("A360Tutor.panel('alumnos');(function(){var b=document.querySelector('[data-act=fichaGuia]');b.click();return 1})()");
+    await A("(document.querySelector('.wtr-toast')||{textContent:'x'}).textContent.indexOf('guía')>=0");
 
     console.log('[6] Sin errores de consola');
     const errors = cdp.events.filter((m) =>
@@ -155,6 +155,13 @@ class CDP {
       (m.method === 'Log.entryAdded' && (m.params.entry.level || m.params.entry) && m.params.entry.source === 'javascript' && (m.params.entry.level === 'error')) ||
       (m.method === 'Runtime.consoleAPICalled' && m.params.type === 'error'));
     errors.length === 0 ? ok('0 errores de javascript') : bad('errores de consola: ' + JSON.stringify(errors.map((e) => (e.params.exceptionDetails || {}).text || (e.params.entry || {}).text).filter(Boolean)));
+
+    console.log('[7] Respaldo y restauración (importarJSON)');
+    await ev("window.__jk=A360Tutor.importarJSON({perfil:{nombre:'Directora A'},conf:{inicio:'2026-08-17'},alumnos:[{id:'imp-1',nombre:'Imported Uno',lic:'Contaduría',tema:'Cumplimiento fiscal',modalidad:'Mixta',ritmo:'acelerado',creado:'2026-08-17'},{id:'imp-2',nombre:'Imported Dos',lic:'Administración',modalidad:'Cuantitativa'}],citas:[{id:'ic1',a:'imp-1',f:'2026-09-21',h:'12:00',m:'Revisión',n:'',d:0}],'av_imp-1':{'b0-0':1}});window.__jkBad=A360Tutor.importarJSON(null);window.__jkBad2=A360Tutor.importarJSON({alumnos:'x'})");
+    await A("window.__jk===true && window.__jkBad===false && window.__jkBad2===false");
+    await A("A360Tutor.alumnos().length===2 && A360Tutor.riesgo('imp-1').ritmo==='acelerado' && A360Tutor.riesgo('imp-1').fases.length===5");
+    await A("A360Tutor.citas().length===1 && A360Tutor.puertaScore('imp-1',1).tot===5 && A360Tutor.bpct('imp-1')>0");
+    await A("A360Tutor.ics().indexOf('Asesoría de tesis - Imported Uno')>=0 && A360Tutor.ics().indexOf('DTEND:')>=0");
 
     console.log('\nRESULTADO: ' + pass + ' OK · ' + fail + ' fallos');
     process.exitCode = fail ? 1 : 0;

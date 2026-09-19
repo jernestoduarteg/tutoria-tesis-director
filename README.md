@@ -23,12 +23,12 @@ conexión): todo se guarda en el navegador (localStorage).
 
 | | |
 |---|---|
-| 👥 **Cartera** | Tesistas con tema, licenciatura, modalidad y ritmo; % de avance en vivo. |
+| 👥 **Cartera** | Tesistas con tema, licenciatura, modalidad y ritmo; % de avance en vivo. **Edita** un tesista en cualquier momento y **busca/filtra** la cartera al instante. |
 | 🗺 **Ruta idea → defensa** | 15 bloques, 38+ entregables (según modalidad) con su «definición de hecho» (estándar verificable). |
 | 🚦 **Riesgo automático** | Bajo / medio / alto con causas; **riesgo por fase** y **ritmo calibral** por tesista (⚡ acelerado / ● normal / 🐢 rezagado). |
 | 🚪 **4 Puertas** | Checklist ponderada (score 0–100) en las semanas 3, 7, 13 y 15. |
 | 🗓 **Plan semanal** | Tareas de la semana actual + pendientes vencidas, por tesista. |
-| 🧩 **Congruencia viva** | Lee la matriz (15 celdas) que el tesista llena en la guía y marca la Puerta 2 con un clic. |
+| 🧩 **Congruencia viva** | Lee la matriz (15 celdas) que el tesista llena en la guía, con **editor de 15 celdas integrado** para la app independiente, y marca la Puerta 2 con un clic. |
 | 📎 **Evidencia** | Fecha real de entrega, enlace (Drive/archivo) y nota del director por entregable, con historial. |
 | 🖨 **Informe PDF** | Hoja imprimible/exportable por tesista (datos, avance, puertas, entregables, bitácora, firma). |
 | ⬇ **Concentrado CSV** | Tabla de la cohorte para la Unidad Académica (Excel). |

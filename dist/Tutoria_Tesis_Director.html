@@ -110,9 +110,18 @@ a{color:var(--wtr-azul)}
 .wtr-rep .wtr-bar{max-width:220px}
 .wtr-rep .sig{margin-top:26px;border-top:2px solid var(--wtr-borde);padding-top:10px;font-size:12px;color:var(--wtr-gris)}
 .wtr-selr{display:inline-block;min-width:120px;padding:5px 10px;border:1px solid var(--wtr-borde);border-radius:999px;font:inherit;font-size:12px;font-weight:800;background:#fff;color:var(--wtr-azul)}
+.wtr-hide{display:none!important}
+.wtr-mz{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:10px}
+.wtr-mz textarea{width:100%;box-sizing:border-box;min-height:84px;border:1px solid var(--wtr-borde);border-radius:10px;padding:8px 10px;font:inherit;font-size:12.5px;color:var(--wtr-tinta);resize:vertical}
+.wtr-tst{position:fixed;right:16px;bottom:16px;z-index:90;display:flex;flex-direction:column;gap:8px;max-width:min(92vw,400px)}
+.wtr-toast{background:var(--wtr-azul);color:#fff;border-radius:12px;padding:10px 14px;font-size:13px;font-weight:600;box-shadow:0 12px 30px #001b3b33;border-left:4px solid var(--wtr-oro)}
+.wtr-toast.ok{border-left-color:var(--wtr-ok)}
+.wtr-toast.warn{border-left-color:var(--wtr-med)}
+.wtr-toast.err{border-left-color:var(--wtr-alto);background:var(--wtr-alto)}
 @media print{
-  .wtr-tabs,.wtr-hero,.wtr-modal-foot{display:none}
-  body.wtr-pr #wrap-tutor > :not(.wtr-modal){display:none}
+  .wtr-tabs,.wtr-hero,.wtr-tst{display:none}
+  .wtr-modal-foot{display:none}
+  body.wtr-pr #wtr{display:none!important}
   body.wtr-pr .wtr-modal{position:static;background:#fff;padding:0;overflow:visible}
   body.wtr-pr .wtr-modal-box{box-shadow:none;max-width:100%;padding:0}
 }
@@ -296,7 +305,7 @@ var LS = (function () {
 function load(k, d) { try { var v = LS.get(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } }
 function save(k, v) { LS.set(k, JSON.stringify(v)); }
 
-var S = { panel: 'resumen', sel: null, conf: { inicio: '2026-08-17' }, perfil: {}, alumnos: [], citas: [], estado: {}, bitacora: {} };
+var S = { panel: 'resumen', sel: null, q: '', conf: { inicio: '2026-08-17' }, perfil: {}, alumnos: [], citas: [], estado: {}, bitacora: {} };
 
 function est(id) { if (S.estado[id] === undefined) { S.estado[id] = load(KEY + 'av_' + id, {}); } return S.estado[id]; }
 function bit(id) { if (S.bitacora[id] === undefined) { S.bitacora[id] = load(KEY + 'bit_' + id, []); } return S.bitacora[id]; }
@@ -430,13 +439,17 @@ function riesgo(id) {
   if (factors.length >= 3 || slots.some(function (s) { return s.due && !s.ok; }) || (r === 'rezagado' && fases.some(function (f) { return f.lvl === 'alto'; }))) nivel = 'alto';
   else if (factors.length >= 1) nivel = 'medio';
   var nxt = null;
-  for (var fi = 0; fi < FASES.length && !nxt; fi++) {
-    for (var bi = 0; bi < FASES[fi].bs.length && !nxt; bi++) {
-      var n = FASES[fi].bs[bi];
-      var ar = block(al.modalidad, n);
-      for (var ii = 0; ii < ar.length; ii++) {
-        var k = 'b' + n + '-' + ii;
-        if (!e[k]) { var it = item(k, id); nxt = { key: k, t: it.t, c: it.c, b: n, sem: it.sem }; break; }
+  var ksAll = allKeys(id);
+  for (var ki = 0; ki < ksAll.length && !nxt; ki++) {
+    var k = ksAll[ki];
+    if (!e[k]) {
+      if (k.indexOf('b') === 0) {
+        var it = item(k, id);
+        if (it) nxt = { key: k, t: it.t, c: it.c, b: it.b, sem: it.sem };
+      } else {
+        var nm = '';
+        PUERTAS.forEach(function (pt) { pt.reqs.forEach(function (rq) { if (rq[0] === k && !nm) nm = rq[1]; }); });
+        if (nm) nxt = { key: k, t: nm, c: nm, b: null, sem: semanaDeKey(k) };
       }
     }
   }
@@ -472,27 +485,30 @@ function alertas() {
 
 /* ---------------- navegación entre vistas de la app ------------- */
 function navGo(n) {
-  if (STANDALONE) { alert('Esta versión independiente no incluye las diapositivas ni la guía del taller. Consúltalas en el curso «Todo en uno» (Aula 360 · FCA-UAS).'); return; }
+  if (STANDALONE) { toast('Esta versión independiente no incluye las diapositivas ni la guía del taller. Consúltalos en el curso «Todo en uno» (Aula 360 · FCA-UAS).', 'warn'); return; }
   if (window.A360 && window.A360.view && typeof A360.goDeck === 'function') { A360.goDeck(n); return; }
   try { window.location.href = 'Diapositivas_por_Tema_de_Tesis.html#d' + n; } catch (e) { }
 }
 function navGuia() {
-  if (STANDALONE) { alert('La guía del tesista (formato, citas APA 7 y matriz de congruencia) se encuentra en el curso «Todo en uno» (Aula 360 · FCA-UAS).'); return; }
+  if (STANDALONE) { toast('La guía del tesista (formato, citas APA 7 y matriz de congruencia) se encuentra en el curso «Todo en uno» (Aula 360 · FCA-UAS).', 'warn'); return; }
   if (window.A360 && typeof A360.show === 'function') { A360.show('guia'); return; }
   try { window.location.href = 'Guia_Tesis_FCA.html'; } catch (e) { }
 }
 
 /* ---------------- exportaciones ------------- */
+function icsStamp(d) {
+  return d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate()) + 'T' + pad(d.getHours()) + pad(d.getMinutes()) + '00';
+}
 function ics() {
   var L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Aula360//Tutoria Tesis//ES', 'CALSCALE:GREGORIAN'];
   sortCitas().forEach(function (c) {
-    var al = alumno(c.a); var y = c.f.replace(/-/g, '');
+    var al = alumno(c.a);
     var hpm = (c.h || '10:00').split(':');
-    var hh0 = parseInt(hpm[0], 10) || 10; var mm0 = hpm[1] || '00';
-    var dh = (hh0 + 1);
+    var ini = parseIso(c.f); ini.setHours(parseInt(hpm[0], 10) || 10, parseInt(hpm[1], 10) || 0, 0, 0);
+    var fin = new Date(ini.getTime() + 3600000);
     L.push('BEGIN:VEVENT');
-    L.push('DTSTART:' + y + 'T' + pad(hh0) + mm0 + '00');
-    L.push('DTEND:' + y + 'T' + (dh < 24 ? pad(dh) : '00') + mm0 + '00');
+    L.push('DTSTART:' + icsStamp(ini));
+    L.push('DTEND:' + icsStamp(fin));
     L.push('SUMMARY:Asesoría de tesis - ' + (al ? al.nombre : 'Director') + (c.m ? ' - ' + c.m : ''));
     L.push('UID:cita-' + c.id + '@aula360');
     L.push('STATUS:' + (c.d ? 'COMPLETED' : 'CONFIRMED'));
@@ -523,20 +539,39 @@ function exportJSON() {
   setTimeout(function () { try { URL.revokeObjectURL(a.href); } catch (e) { } }, 4000);
 }
 function importJSON(obj) {
-  if (!obj) return; 
-  if (obj.perfil) S.perfil = obj.perfil;
-  if (obj.conf) S.conf = obj.conf;
-  if (obj.alumnos) S.alumnos = obj.alumnos.map(function (x) { x.ritmo = (x.ritmo && ['acelerado', 'normal', 'rezagado'].indexOf(x.ritmo) >= 0) ? x.ritmo : 'normal'; return x; });
-  if (obj.citas) S.citas = obj.citas;
+  if (!obj || typeof obj !== 'object' || Array.isArray(obj)) return false;
+  if (obj.alumnos !== undefined && !Array.isArray(obj.alumnos)) return false;
+  if (obj.perfil && typeof obj.perfil === 'object') S.perfil = obj.perfil;
+  if (obj.conf && typeof obj.conf === 'object') S.conf = obj.conf;
+  if (obj.alumnos) {
+    S.alumnos = obj.alumnos.map(function (x) {
+      x = x || {};
+      return {
+        id: String(x.id || uid()),
+        nombre: String(x.nombre || 'Sin nombre'),
+        lic: String(x.lic || '—'),
+        tema: String(x.tema || ''),
+        modalidad: (['Cuantitativa', 'Cualitativa', 'Mixta'].indexOf(String(x.modalidad)) >= 0 ? String(x.modalidad) : 'Cuantitativa'),
+        ritmo: (['acelerado', 'normal', 'rezagado'].indexOf(String(x.ritmo || 'normal')) >= 0 ? String(x.ritmo) : 'normal'),
+        creado: /^\d{4}-\d{2}-\d{2}$/.test(String(x.creado || '')) ? String(x.creado) : hoy()
+      };
+    });
+  }
+  if (obj.citas !== undefined) S.citas = Array.isArray(obj.citas) ? obj.citas : [];
+  else if (obj.alumnos) S.citas = [];
   (obj.alumnos || []).forEach(function (al) { if (obj['av_' + al.id]) save(KEY + 'av_' + al.id, obj['av_' + al.id]); if (obj['bit_' + al.id]) save(KEY + 'bit_' + al.id, obj['bit_' + al.id]); });
   S.estado = {}; S.bitacora = {};
   persistAl(); persistCi(); save(KEY + 'conf', S.conf); save(KEY + 'perfil', S.perfil);
   render();
+  return true;
 }
 function resetAll() {
-  if (!confirm('¿Borrar TODOS los alumnos, avances, citas y la configuración de la tutoría?')) return;
-  LS.keys().forEach(function (k) { if (k.indexOf(KEY) === 0) LS.del(k); });
-  loadAll(); render(); alert('Tutoría restablecida: se conservan las fuentes del curso y la guía.');
+  ask('¿Borrar TODOS los alumnos, avances, citas y la configuración de la tutoría? Esta acción no se puede deshacer.', function (ok) {
+    if (!ok) return;
+    LS.keys().forEach(function (k) { if (k.indexOf(KEY) === 0) LS.del(k); });
+    loadAll(); render();
+    toast('Tutoría restablecida: se conservan las fuentes del curso y la guía.');
+  }, true);
 }
 function demo() {
   if (S.alumnos.length === 0) {
@@ -548,20 +583,20 @@ function demo() {
     S.citas.push({ id: 'c' + Date.now(), a: a1.id, f: hoy(), h: '10:30', m: 'Revisión de planteamiento y preguntas', n: 'Ajustar pregunta 3', d: 1 });
     var d2 = addDays(new Date(), 3); S.citas.push({ id: 'c' + (Date.now() + 1), a: a2.id, f: isoYmd(d2), h: '09:00', m: 'Estado del arte', n: '', d: 0 });
     persistCi();
-    alert('Ejemplo cargado: 2 tesistas, avances y citas. Personaliza o borra desde «Ajustes».');
+    toast('Ejemplo cargado: 2 tesistas, avances y citas. Personaliza o borra desde «Ajustes».');
     render(); return;
   }
-  alert('Ya hay alumnos registrados; borra o usa «Ajustes → Restablecer» para cargar el ejemplo.');
+  toast('Ya hay alumnos registrados; borra o usa «Ajustes → Restablecer» para cargar el ejemplo.', 'warn');
 }
 
 /* ---------------- render ------------- */
 function weekChip(sem) {
-  var w = semanaActual(); var cls = sem < w ? 'late' : (sem === w ? '' : '');
+  var w = semanaActual(); var cls = sem < w ? 'late' : '';
   return '<span class="wtr-week ' + cls + '">Sem ' + sem + ' · ' + dom(sem) + '</span>';
 }
-function bar(pct, cls, id) {
-  var ref = id ? expectedPctFor(id) : expectedPct();
-  var c = (pct < Math.max(24, ref - 30)) ? ' late' : '';
+function bar(pct, cls, id, ref) {
+  var r = (typeof ref === 'number') ? ref : (id ? expectedPctFor(id) : expectedPct());
+  var c = (pct < Math.max(24, r - 30)) ? ' late' : '';
   return '<div class="wtr-bar"><i style="width:' + Math.min(100, pct) + '%" class="' + (cls || '') + c + '"></i></div>';
 }
 function head() {
@@ -632,21 +667,98 @@ function informeHTML(id) {
   h += '<div class="sig">Atentamente,<br>' + esc(S.perfil.nombre || 'El/la director(a) de tesis') + '<br>' + esc(S.perfil.inst || '') + '</div></div>';
   return h;
 }
-function openInforme(id) {
-  var old = document.querySelector('.wtr-modal'); if (old && old.parentNode) old.parentNode.removeChild(old);
-  var wrap = document.getElementById(WRAP) || document.getElementById('wtr');
-  if (!wrap) return;
+var _lastFocus = null;
+var askCb = null;
+function modalOpen(html, label, foot) {
+  modalClose();
+  try { _lastFocus = document.activeElement; } catch (e) { }
   var m = document.createElement('div');
   m.className = 'wtr-modal';
-  m.innerHTML = '<div class="wtr-modal-box">' + informeHTML(id) +
-    '<div class="wtr-modal-foot"><button class="wtr-btn gold" data-act="print">🖨 Imprimir / PDF</button>' +
-    '<button class="wtr-btn line" data-act="printClose">✕ Cerrar</button></div></div>';
-  wrap.appendChild(m); m.scrollTop = 0;
+  m.setAttribute('role', 'dialog');
+  m.setAttribute('aria-modal', 'true');
+  if (label) m.setAttribute('aria-label', label);
+  var footH = foot ? '<div class="wtr-modal-foot">' + foot + '</div>' : '';
+  m.innerHTML = '<div class="wtr-modal-box">' + html + footH + '</div>';
+  document.body.appendChild(m);
+  var first = m.querySelector('button, input, select, textarea, a[href]');
+  if (first) { try { first.focus(); } catch (e) { } }
+  return m;
+}
+function modalClose() {
+  var m = document.querySelector('.wtr-modal');
+  if (m && m.parentNode) m.parentNode.removeChild(m);
+  if (_lastFocus && _lastFocus.focus) { try { _lastFocus.focus(); } catch (e) { } }
+  _lastFocus = null;
+}
+function toast(msg, cls) {
+  var wrap = document.querySelector('.wtr-tst');
+  if (!wrap) {
+    wrap = document.createElement('div');
+    wrap.className = 'wtr-tst';
+    document.body.appendChild(wrap);
+  }
+  while (wrap.childNodes.length > 4) wrap.removeChild(wrap.firstChild);
+  var t = document.createElement('div');
+  t.className = 'wtr-toast ' + (cls || 'ok');
+  t.textContent = String(msg);
+  wrap.appendChild(t);
+  setTimeout(function () { if (t.parentNode === wrap) wrap.removeChild(t); }, 4500);
+}
+function ask(msg, cb, danger) {
+  askCb = cb;
+  modalOpen('<div class="wtr-rep"><h2 style="margin:0 0 4px">¿Confirmar acción?</h2><p style="margin:6px 0 0;color:var(--wtr-gris);font-size:13.5px">' + esc(msg) + '</p></div>',
+    'Confirmación',
+    '<button class="wtr-btn line" data-act="askNo">Cancelar</button><button class="wtr-btn ' + (danger ? 'dang' : 'gold') + '" data-act="askYes">Aceptar</button>');
+}
+function openInforme(id) {
+  modalOpen('<div class="wtr-rep">' + informeHTML(id) + '</div>', 'Informe de avance de tesis',
+    '<button class="wtr-btn gold" data-act="print">🖨 Imprimir / PDF</button><button class="wtr-btn line" data-act="printClose">✕ Cerrar</button>');
 }
 function doPrint() { document.body.classList.add('wtr-pr'); setTimeout(function () { window.print(); }, 60); }
+function editorMatriz() {
+  var cells = '', c = 0;
+  for (var i = 0; i < 15; i++) {
+    var v = null; try { v = localStorage.getItem('a360_mz_' + i); } catch (e) { }
+    if (v) { var t2 = v.replace(/<[^>]*>/g, '').replace(/\s/g, ''); if (t2.length > 6) c++; }
+    cells += '<textarea class="wtr-mz-' + i + '" placeholder="Celda ' + (i + 1) + '">' + esc(v || '') + '</textarea>';
+  }
+  modalOpen('<div class="wtr-rep"><h2 style="margin:0 0 2px">🧩 Matriz de congruencia (15 celdas)</h2>' +
+    '<p class="wtr-sub">Equivale a la matriz de la Guía del tesista. Cuando las 15 celdas tengan contenido, usa «Sincronizar matriz» para marcar la Puerta 2.</p>' +
+    '<div class="wtr-mz">' + cells + '</div></div>',
+    'Matriz de congruencia',
+    '<button class="wtr-btn gold" data-act="saveMZ">💾 Guardar matriz</button><button class="wtr-btn line" data-act="printClose">✕ Cerrar</button>');
+}
+function guardarMatriz() {
+  var c = 0;
+  for (var i = 0; i < 15; i++) {
+    var el = document.querySelector('.wtr-mz-' + i);
+    var v = (el && el.value !== undefined) ? String(el.value).trim() : '';
+    try { localStorage.setItem('a360_mz_' + i, v); } catch (e) { }
+    if (v.replace(/\s/g, '').length > 6) c++;
+  }
+  modalClose();
+  toast('Matriz guardada: ' + c + '/15 celdas con contenido. Usa «Sincronizar matriz» para marcar la Puerta 2.');
+}
+function applyFilter() {
+  var q = (S.q || '').toLowerCase().replace(/^\s+|\s+$/g, '');
+  var cards = document.querySelectorAll('#wtr .wtr-al');
+  for (var i = 0; i < cards.length; i++) {
+    var on = !q || cards[i].textContent.toLowerCase().indexOf(q) >= 0;
+    cards[i].classList.toggle('wtr-hide', !on);
+  }
+}
 if (window.addEventListener) {
   window.addEventListener('afterprint', function () { document.body.classList.remove('wtr-pr'); });
-  window.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') { var mo = document.querySelector('.wtr-modal'); if (mo && mo.parentNode) mo.parentNode.removeChild(mo); } });
+  window.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape') { modalClose(); return; }
+    var m = document.querySelector('.wtr-modal');
+    if (!m || ev.key !== 'Tab') return;
+    var fs = m.querySelectorAll('button, input, select, textarea, a[href], [tabindex]');
+    if (!fs.length) return;
+    var first = fs[0], last = fs[fs.length - 1];
+    if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus(); }
+    else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
+  });
 }
 function csvCohorte() {
   var cols = ['Nombre', 'Licenciatura', 'Modalidad', 'Ritmo', 'Tema', 'Semana', 'Avance %', 'Riesgo', 'Fase actual', 'Puerta 1', 'Puerta 2', 'Puerta 3', 'Puerta 4', 'Proxima cita', 'Ultima asesoria'];
@@ -682,7 +794,7 @@ function sincroMatriz(id) {
   var done = !!e2['b8-0'];
   if (mz >= 15) e2['b8-0'] = 1;
   save(KEY + 'av_' + id, e2);
-  alert(mz >= 15 ? (done ? '✔ Matriz con ' + mz + '/15 celdas llenas (ya estaba marcada la Puerta 2).' : '✔ Matriz de la Guía con ' + mz + '/15 celdas: marcamos «Matriz de congruencia completa» (Puerta 2).') : 'La matriz de la Guía solo tiene ' + mz + '/15 celdas con contenido: revisa el bloque 8 con el tesista.');
+  toast(mz >= 15 ? (done ? '✔ Matriz con ' + mz + '/15 celdas llenas (ya estaba marcada la Puerta 2).' : '✔ Matriz de la Guía con ' + mz + '/15 celdas: marcamos «Matriz de congruencia completa» (Puerta 2).') : 'La matriz de la Guía solo tiene ' + mz + '/15 celdas con contenido: revisa el bloque 8 con el tesista.', mz >= 15 ? 'ok' : 'warn');
   render();
 }
 function planResumen(al) {
@@ -722,7 +834,9 @@ function renderResumen() {
     avisos.forEach(function (a) { h += '<div class="wtr-alert ' + a.cls + '">' + a.icon + '<span>' + a.txt + '</span></div>'; });
     h += '</div>';
   }
-  h += '<h2 class="wtr-fase" style="margin-top:6px">Cartera de tesistas</h2><div class="wtr-grid">';
+  h += '<h2 class="wtr-fase" style="margin-top:6px">Cartera de tesistas</h2>' +
+    '<div style="max-width:380px;margin:4px 0 12px"><input class="wtr-input wtr-filtro" value="' + esc(S.q || '') + '" placeholder="🔎 Buscar por nombre, licenciatura o tema…" aria-label="Buscar en la cartera"></div>' +
+    '<div class="wtr-grid">';
   S.alumnos.forEach(function (al) {
     var r = riesgo(al.id);
     var faseNm = r.next ? FASES.find(function (f) { return f.bs.indexOf(r.next.b) >= 0; }).n : 'Completa';
@@ -773,6 +887,7 @@ function renderAlumnos() {
     h += '<div class="wtr-row" style="padding:6px 0;border-bottom:1px dashed #e6ecf3">' +
       '<button class="wtr-btn line sm" data-act="selAl" data-a="' + al.id + '" style="flex:1;text-align:left">' + esc(al.nombre) + '</button>' +
       '<span class="wtr-bad ' + r.nivel + '">' + r.pct + '%</span>' +
+      '<button title="Editar tesista" class="wtr-btn line sm" data-act="editAl" data-a="' + al.id + '">✏️</button>' +
       '<button title="Borrar tesista" class="wtr-btn dang sm" data-act="delAl" data-a="' + al.id + '">✕</button></div>';
   });
   h += '</div>';
@@ -808,6 +923,7 @@ function renderAlumnos() {
     });
     h += '<div class="wtr-form" style="margin-top:6px"><span style="grid-column:1/-1;display:flex;gap:8px;align-items:center">' +
       '<span class="wtr-ids">🧩 Matriz de congruencia de la Guía: <b>' + mz + '/15</b> celdas con contenido.</span>' +
+      '<button class="wtr-btn line sm" data-act="editMZ" data-a="' + sel + '">✏️ Editar matriz</button>' +
       '<button class="wtr-btn line sm" data-act="synMZ" data-a="' + sel + '">⚡ Sincronizar matriz</button></span></div>';
     h += '<h3>🗒 Bitácora de asesorías</h3>';
     var bl = bit(sel).slice().sort(function (a, b) { return a.f < b.f ? 1 : -1; });
@@ -852,12 +968,12 @@ function renderRuta() {
     var fr = r0.fases && r0.fases.filter(function (x) { return x.f === f.n; })[0];
     h += '<div class="wtr-fase">' + esc(f.n) + ' — ' + f.sem + ' · <span class="wtr-bad ' + (fs.pct === 100 ? 'bajo' : 'med') + '">' + fs.pct + '%</span>' +
       (fr ? ' <span class="wtr-ids">(referencia ' + fr.exp + '% · ' + fr.lvl + ')</span>' : '') + '</div>' +
-      '<div class="wtr-card" style="padding:10px 12px"><div class="wtr-grow">' + bar(fs.pct, '', al.id) + '</div>';
+      '<div class="wtr-card" style="padding:10px 12px"><div class="wtr-grow">' + bar(fs.pct, '', al.id, fr ? fr.exp : null) + '</div>';
     f.bs.forEach(function (n) {
       var ar = block(al.modalidad, n); var c = 0;
       ar.forEach(function (_, i) { if (est(al.id)['b' + n + '-' + i]) c++; });
       var sw = semanaDeBloque(n);
-      h += '<details class="wtr-dets" ' + (c < ar.length && sw <= semanaActual() ? 'open' : '') + '>' +
+      h += '<details class="wtr-dets" data-blk="' + n + '" ' + (c < ar.length && sw <= semanaActual() ? 'open' : '') + '>' +
         '<summary>' + BLOCKS[n].icon + ' <span class="wtr-grow">' + esc(BLOCKS[n].t) + '</span> ' + weekChip(sw) +
         '<span class="wtr-bad ' + (c === ar.length ? 'bajo' : 'med') + '">' + c + '/' + ar.length + '</span></summary>' +
         '<div class="in">';
@@ -971,6 +1087,12 @@ function renderCitas() {
 function render() {
   var root = document.getElementById('wtr');
   if (!root) return;
+  var open = {};
+  var ds = root.querySelectorAll('details[data-blk], .wtr-evid');
+  for (var i = 0; i < ds.length; i++) {
+    var key = ds[i].getAttribute('data-blk') || ('k' + (ds[i].getAttribute('data-k') || i));
+    open[key] = !!ds[i].open;
+  }
   var h = '';
   if (S.panel === 'resumen') h = renderResumen();
   else if (S.panel === 'alumnos') h = renderAlumnos();
@@ -978,6 +1100,12 @@ function render() {
   else if (S.panel === 'cronograma') h = renderCronograma();
   else h = renderCitas();
   root.innerHTML = h;
+  var ds2 = root.querySelectorAll('details[data-blk], .wtr-evid');
+  for (var j = 0; j < ds2.length; j++) {
+    var key2 = ds2[j].getAttribute('data-blk') || ('k' + (ds2[j].getAttribute('data-k') || j));
+    if (open[key2]) ds2[j].open = true;
+  }
+  applyFilter();
 }
 
 /* ---------------- eventos ------------- */
@@ -986,7 +1114,7 @@ function onAddAl() {
   var lic = (document.querySelector('.wtr-f-lic') || {}).value || '';
   var mod = (document.querySelector('.wtr-f-mod') || {}).value || 'Cuantitativa';
   var tema = (document.querySelector('.wtr-f-tema') || {}).value || '';
-  if (!n.trim()) { alert('Escribe al menos el nombre del tesista.'); return; }
+  if (!n.trim()) { toast('Escribe al menos el nombre del tesista.', 'warn'); return; }
   var a = { id: uid(), nombre: n.trim(), lic: lic.trim() || '—', tema: tema.trim(), modalidad: mod, ritmo: 'normal', creado: hoy() };
   S.alumnos.push(a); persistAl(); S.sel = a.id; S.panel = 'ruta'; render();
 }
@@ -1014,23 +1142,63 @@ function rootClick(e) {
   if (act === 'informe') { openInforme(a); return; }
   if (act === 'csv') { downloadCSV(); return; }
   if (act === 'synMZ') { sincroMatriz(a); return; }
+  if (act === 'editMZ') { editorMatriz(); return; }
+  if (act === 'saveMZ') { guardarMatriz(); return; }
   if (act === 'print') { doPrint(); return; }
-  if (act === 'printClose') { var _m = document.querySelector('.wtr-modal'); if (_m && _m.parentNode) _m.parentNode.removeChild(_m); return; }
+  if (act === 'printClose') { modalClose(); return; }
+  if (act === 'askYes') { var _cb = askCb; askCb = null; modalClose(); if (_cb) _cb(true); return; }
+  if (act === 'askNo') { var _cb2 = askCb; askCb = null; modalClose(); if (_cb2) _cb2(false); return; }
   if (act === 'selAl') { S.sel = a; S.panel = 'alumnos'; render(); return; }
+  if (act === 'editAl') {
+    var alE = alumno(a);
+    if (!alE) return;
+    var modOpts = ['Cuantitativa', 'Cualitativa', 'Mixta'].map(function (o) { return '<option' + (alE.modalidad === o ? ' selected' : '') + '>' + o + '</option>'; }).join('');
+    var ritOpts = ['acelerado', 'normal', 'rezagado'].map(function (v) { return '<option value="' + v + '"' + ((alE.ritmo || 'normal') === v ? ' selected' : '') + '>' + (RITMO[v] || v) + '</option>'; }).join('');
+    modalOpen('<div class="wtr-rep"><h2 style="margin:0 0 4px">✏️ Editar tesista</h2><div class="wtr-form">' +
+      '<span><label class="wtr-lab">Nombre completo</label><input class="wtr-input wtr-e-nombre" value="' + esc(alE.nombre) + '"></span>' +
+      '<span><label class="wtr-lab">Licenciatura</label><input class="wtr-input wtr-e-lic" value="' + esc(alE.lic) + '"></span>' +
+      '<span style="grid-column:1/-1"><label class="wtr-lab">Tema de tesis</label><input class="wtr-input wtr-e-tema" value="' + esc(alE.tema || '') + '"></span>' +
+      '<span><label class="wtr-lab">Modalidad</label><select class="wtr-select wtr-e-mod">' + modOpts + '</select></span>' +
+      '<span><label class="wtr-lab">Ritmo</label><select class="wtr-select wtr-e-ritmo">' + ritOpts + '</select></span>' +
+      '</div></div>',
+      'Editar tesista',
+      '<button class="wtr-btn gold" data-act="saveAl" data-a="' + a + '">💾 Guardar cambios</button><button class="wtr-btn line" data-act="printClose">✕ Cerrar</button>');
+    return;
+  }
+  if (act === 'saveAl') {
+    var alU = alumno(a);
+    if (alU) {
+      var kn = (document.querySelector('.wtr-e-nombre') || {}).value || '';
+      var kl = (document.querySelector('.wtr-e-lic') || {}).value || '';
+      var kt = (document.querySelector('.wtr-e-tema') || {}).value || '';
+      var km = (document.querySelector('.wtr-e-mod') || {}).value || '';
+      var kr = (document.querySelector('.wtr-e-ritmo') || {}).value || '';
+      if (!kn.trim()) { toast('Escribe al menos el nombre del tesista.', 'warn'); return; }
+      alU.nombre = kn.trim(); alU.lic = kl.trim() || '—'; alU.tema = kt.trim();
+      alU.modalidad = ['Cuantitativa', 'Cualitativa', 'Mixta'].indexOf(km) >= 0 ? km : 'Cuantitativa';
+      alU.ritmo = ['acelerado', 'normal', 'rezagado'].indexOf(kr) >= 0 ? kr : 'normal';
+      persistAl();
+    }
+    modalClose(); render(); toast('Datos del tesista actualizados.');
+    return;
+  }
   if (act === 'delAl') {
-    if (!confirm('¿Eliminar a este tesista y todo su avance?')) return;
-    S.alumnos = S.alumnos.filter(function (x) { return x.id !== a; });
-    S.citas = S.citas.filter(function (c) { return c.a !== a; });
-    LS.del(KEY + 'av_' + a); LS.del(KEY + 'bit_' + a);
-    if (S.sel === a) S.sel = S.alumnos[0] ? S.alumnos[0].id : null;
-    persistAl(); persistCi(); render(); return;
+    ask('¿Eliminar a este tesista y todo su avance? Esta acción no se puede deshacer.', function (ok) {
+      if (!ok) return;
+      S.alumnos = S.alumnos.filter(function (x) { return x.id !== a; });
+      S.citas = S.citas.filter(function (c) { return c.a !== a; });
+      LS.del(KEY + 'av_' + a); LS.del(KEY + 'bit_' + a);
+      if (S.sel === a) S.sel = S.alumnos[0] ? S.alumnos[0].id : null;
+      persistAl(); persistCi(); render();
+    }, true);
+    return;
   }
   if (act === 'addAl') { onAddAl(); return; }
   if (act === 'addCita') { onAddCita(); return; }
   if (act === 'addBit') {
     var f = (document.querySelector('.wtr-b-f') || {}).value || hoy();
     var nn = (document.querySelector('.wtr-b-n') || {}).value || '';
-    if (!nn.trim()) { alert('Escribe la nota de la asesoría.'); return; }
+    if (!nn.trim()) { toast('Escribe la nota de la asesoría.', 'warn'); return; }
     bit(a).push({ f: f, n: nn.trim() }); save(KEY + 'bit_' + a, bit(a)); render(); return;
   }
   if (act === 'doneCita') { var c0 = S.citas.find(function (c) { return c.id === cid; }); if (c0) { c0.d = 1; persistCi(); render(); } return; }
@@ -1083,18 +1251,31 @@ window.A360Tutor = {
 };
 
 loadAll();
-var rootEl = document.getElementById('wrap-tutor') || document.getElementById('wtr');
-if (rootEl) {
-  rootEl.addEventListener('click', rootClick);
-  rootEl.addEventListener('change', function (ev) {
-    if (!ev.target) return;
-    var t = ev.target;
-    if (t.classList.contains('wtr-ritmo-set')) {
-      var ida = t.getAttribute('data-a'); var al2 = alumno(ida);
-      if (al2) { al2.ritmo = ['acelerado', 'normal', 'rezagado'].indexOf(t.value) >= 0 ? t.value : 'normal'; persistAl(); render(); }
-    }
-  });
-}
+document.addEventListener('click', rootClick);
+document.addEventListener('change', function (ev) {
+  if (!ev.target) return;
+  var t = ev.target;
+  if (t.classList && t.classList.contains('wtr-ritmo-set')) {
+    var ida = t.getAttribute('data-a'); var al2 = alumno(ida);
+    if (al2) { al2.ritmo = ['acelerado', 'normal', 'rezagado'].indexOf(t.value) >= 0 ? t.value : 'normal'; persistAl(); render(); }
+  }
+  if (t.classList && t.classList.contains('wtr-file') && t.files && t.files.length) {
+    var rd = new FileReader();
+    rd.onload = function () {
+      try {
+        var obj = JSON.parse(String(rd.result));
+        if (importJSON(obj)) toast('Respaldo restaurado: ' + obj.alumnos.length + ' tesista(s).');
+        else toast('El archivo no parece un respaldo válido de tutoría.', 'warn');
+      } catch (err2) { toast('No se pudo leer el respaldo JSON: ' + err2.message, 'err'); }
+    };
+    rd.readAsText(t.files[0]);
+    t.value = '';
+  }
+});
+document.addEventListener('input', function (ev) {
+  var t = ev.target;
+  if (t && t.classList && t.classList.contains('wtr-filtro')) { S.q = t.value; applyFilter(); }
+});
 if (document.getElementById(WRAP) || document.getElementById('wtr')) render();
 
 })();
